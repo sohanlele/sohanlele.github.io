@@ -36,6 +36,8 @@ jobs:
 
       - name: Build (static export)
         run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: '/Portfolio'
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

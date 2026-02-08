@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
-const basePath = process.env.NODE_ENV === 'production' ? '/Portfolio' : ''
+// Use NEXT_PUBLIC_BASE_PATH for deployment: '' for root (Vercel/custom domain), '/Portfolio' for GitHub Pages project site
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
 const nextConfig = {
   output: 'export',
   env: { NEXT_PUBLIC_BASE_PATH: basePath },
-  // Required for GitHub Pages when repo is sohanlele/Portfolio (site at sohanlele.github.io/Portfolio/)
   basePath,
   assetPrefix: basePath ? `${basePath}/` : '',
   experimental: {

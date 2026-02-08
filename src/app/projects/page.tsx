@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { projects } from '@/content/projects'
+import { basePath } from '@/lib/utils'
 
 const ACCENT = '#166534'
 
@@ -29,7 +30,7 @@ export default function ProjectsPage() {
                 <div className="relative w-full h-[280px] sm:h-[320px] flex-shrink-0 overflow-hidden rounded-t-lg">
                   {project.heroImage ? (
                     <Image
-                      src={project.heroImage}
+                      src={basePath + project.heroImage}
                       alt={project.title}
                       fill
                       className={`object-cover group-hover:scale-[1.02] transition-transform duration-300 ${

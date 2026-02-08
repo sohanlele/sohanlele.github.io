@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Project } from '@/content/projects'
+import { basePath } from '@/lib/utils'
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -21,7 +22,7 @@ function InlineImageBlock({ src, alt }: { src: string; alt: string }) {
       <div className="max-w-6xl mx-auto">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={src}
+          src={basePath + src}
           alt={alt}
           className="w-full h-auto block"
         />
@@ -59,7 +60,7 @@ function InlineLocalVideoBlock({ src }: { src: string }) {
             preload="metadata"
             className="absolute inset-0 w-full h-full object-contain"
           >
-            <source src={src} type="video/mp4" />
+            <source src={basePath + src} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -109,7 +110,7 @@ export default function CaseStudyClient({ project }: { project: Project }) {
         <div className="max-w-4xl mx-auto px-5 sm:px-8 mb-8">
           <div className="relative aspect-video overflow-hidden">
             <Image
-              src={project.heroImage}
+              src={basePath + project.heroImage}
               alt={project.title}
               fill
               className="object-contain"

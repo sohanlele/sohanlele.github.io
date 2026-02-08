@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { basePath } from '@/lib/utils'
 
 export function Navbar() {
   const pathname = usePathname()
@@ -33,7 +34,7 @@ export function Navbar() {
           </li>
           <li>
             <a
-              href="/files/sohan_lele_resume.pdf"
+              href={basePath + "/files/sohan_lele_resume.pdf"}
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/90 hover:text-white hover:underline transition-colors"

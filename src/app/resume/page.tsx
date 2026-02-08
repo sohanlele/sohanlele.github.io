@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Download, ExternalLink } from 'lucide-react'
+import { basePath } from '@/lib/utils'
 
 export default function ResumePage() {
   return (
@@ -20,7 +21,7 @@ export default function ResumePage() {
 
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <a
-            href="/files/sohan_lele_resume.pdf"
+            href={basePath + "/files/sohan_lele_resume.pdf"}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center px-6 py-3 bg-[#166534] text-white rounded-lg hover:opacity-90 transition-opacity font-medium text-[15px]"
@@ -29,7 +30,7 @@ export default function ResumePage() {
             Open in New Tab
           </a>
           <a
-            href="/files/sohan_lele_resume.pdf"
+            href={basePath + "/files/sohan_lele_resume.pdf"}
             download="Sohan_Lele_Resume.pdf"
             className="inline-flex items-center justify-center px-6 py-3 border border-[#e0ddd8] bg-white text-[#374151] rounded-lg hover:border-[#166534]/40 transition-colors font-medium text-[15px]"
           >
@@ -45,7 +46,7 @@ export default function ResumePage() {
           className="bg-white rounded-lg border border-[#e0ddd8] overflow-hidden"
         >
           <iframe
-            src="/files/sohan_lele_resume.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"
+            src={basePath + "/files/sohan_lele_resume.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"}
             className="w-full h-[800px] border-0"
             title="Sohan Lele Resume"
           />

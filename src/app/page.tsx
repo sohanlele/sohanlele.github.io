@@ -6,7 +6,7 @@ export default function HomePage() {
       <div className="max-w-2xl mx-auto px-5 sm:px-8 pt-24 pb-20 md:pt-28 md:pb-24">
         <header>
           <h1 className="text-[30px] leading-tight sm:text-[34px] md:text-[40px] lg:text-[44px] font-bold tracking-tight text-[#0b0d12]">
-            Hey, I'm <span style={{ color: ACCENT }}>Sohan Lele</span>
+            Hi, I'm <span style={{ color: ACCENT }}>Sohan Lele</span>
           </h1>
         </header>
 

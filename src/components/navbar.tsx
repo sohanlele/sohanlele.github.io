@@ -34,7 +34,7 @@ export function Navbar() {
           </li>
           <li>
             <a
-              href={basePath + "/files/sohan_lele_resume.pdf"}
+              href={basePath + "/files/sohan_lele_resume.pdf?v=2"}
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/90 hover:text-white hover:underline transition-colors"

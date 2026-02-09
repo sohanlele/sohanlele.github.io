@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Download, ExternalLink } from 'lucide-react'
 import { basePath } from '@/lib/utils'
 
+const resumePdf = basePath + "/files/sohan_lele_resume.pdf?v=2"
+
 export default function ResumePage() {
   return (
     <div className="min-h-screen bg-[#f7f6f3] pt-24 pb-20 md:pt-28 md:pb-24">
@@ -21,7 +23,7 @@ export default function ResumePage() {
 
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <a
-            href={basePath + "/files/sohan_lele_resume.pdf"}
+            href={resumePdf}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center px-6 py-3 bg-[#166534] text-white rounded-lg hover:opacity-90 transition-opacity font-medium text-[15px]"
@@ -30,7 +32,7 @@ export default function ResumePage() {
             Open in New Tab
           </a>
           <a
-            href={basePath + "/files/sohan_lele_resume.pdf"}
+            href={resumePdf}
             download="Sohan_Lele_Resume.pdf"
             className="inline-flex items-center justify-center px-6 py-3 border border-[#e0ddd8] bg-white text-[#374151] rounded-lg hover:border-[#166534]/40 transition-colors font-medium text-[15px]"
           >
@@ -46,7 +48,7 @@ export default function ResumePage() {
           className="bg-white rounded-lg border border-[#e0ddd8] overflow-hidden"
         >
           <iframe
-            src={basePath + "/files/sohan_lele_resume.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"}
+            src={resumePdf + "#toolbar=0&navpanes=0&scrollbar=0&view=FitH"}
             className="w-full h-[800px] border-0"
             title="Sohan Lele Resume"
           />

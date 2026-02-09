@@ -27,13 +27,13 @@ export default function ProjectsPage() {
               'group flex flex-col h-full overflow-hidden bg-white rounded-lg w-full'
             const content = (
               <>
-                <div className="relative w-full h-[280px] sm:h-[320px] flex-shrink-0 overflow-hidden rounded-t-lg">
+                <div className="relative w-full aspect-[3/2] flex-shrink-0 overflow-hidden rounded-t-lg bg-[#f0eeeb]">
                   {project.heroImage ? (
                     <Image
                       src={basePath + project.heroImage}
                       alt={project.title}
                       fill
-                      className={`object-cover group-hover:scale-[1.02] transition-transform duration-300 ${
+                      className={`object-cover group-hover:scale-[1.02] transition-transform duration-300 origin-center ${
                         project.heroImagePosition === 'left top'
                           ? 'object-left-top'
                           : project.heroImagePosition === 'left'
@@ -41,7 +41,8 @@ export default function ProjectsPage() {
                             : project.heroImagePosition === 'top'
                               ? 'object-top'
                               : 'object-center'
-                      }`}
+                      } ${project.heroImageScale != null ? 'scale-[var(--hero-scale)]' : ''}`}
+                      style={project.heroImageScale != null ? { '--hero-scale': String(project.heroImageScale) } as React.CSSProperties : undefined}
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   ) : (

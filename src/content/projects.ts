@@ -4,8 +4,12 @@ export type Project = {
   year: string
   oneLiner: string
   heroImage?: string
+  /** Optional fit for hero image on project cards. Use "contain" when the image should not be cropped (e.g. to show full subject). */
+  heroImageFit?: 'cover' | 'contain'
   /** Optional position for hero image on project cards (e.g. "left top" to crop right/bottom and enlarge subject). */
   heroImagePosition?: 'center' | 'left top' | 'left' | 'top'
+  /** Optional scale for hero image (e.g. 1.3 = zoom in so subject appears larger in the card). */
+  heroImageScale?: number
   /** When set, project card links to this URL instead of /work/[slug] */
   externalUrl?: string
   gallery?: string[]
@@ -42,7 +46,8 @@ export const projects: Project[] = [
     oneLiner:
       'AI personal training on smart glasses: workout planning, automatic tracking, and real-time audio coaching for the gym floor.',
     heroImage: '/images/projects/irix-hero.png',
-    heroImagePosition: 'left top',
+    heroImagePosition: 'left',
+    heroImageScale: 1.4,
     inlineImages: [
       { after: 'solution', src: '/images/projects/irix-hud-ring.png', alt: 'Even G2 smart glasses on wooden surface' },
     ],

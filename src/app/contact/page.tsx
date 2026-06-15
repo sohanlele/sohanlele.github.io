@@ -1,5 +1,3 @@
-'use client'
-
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-[#f7f6f3] pt-24 pb-20 md:pt-28 md:pb-24">

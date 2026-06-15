@@ -1,4 +1,4 @@
-# Sohan Lele's Personal Website
+# Sohan Lele's Personal Website 
 
 A modern, Apple-inspired portfolio website built with Next.js 14, TypeScript, and Tailwind CSS.
 

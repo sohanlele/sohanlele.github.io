@@ -49,7 +49,7 @@ function InlineVideoBlock({ youtubeId }: { youtubeId: string }) {
   )
 }
 
-function InlineLocalVideoBlock({ src }: { src: string }) {
+function InlineLocalVideoBlock({ src, caption }: { src: string; caption?: string }) {
   return (
     <div className="py-10 -mx-5 sm:-mx-8">
       <div className="max-w-3xl mx-auto">
@@ -64,6 +64,7 @@ function InlineLocalVideoBlock({ src }: { src: string }) {
             Your browser does not support the video tag.
           </video>
         </div>
+        {caption && <p className="mt-3 px-5 sm:px-8 text-sm text-[#4b5563]">{caption}</p>}
       </div>
     </div>
   )
@@ -141,7 +142,7 @@ export default function CaseStudyClient({ project }: { project: Project }) {
             {project.inlineLocalVideos
               ?.filter((v) => v.after === 'problem')
               .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} />
+                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
               ))}
           </>
         )}
@@ -164,7 +165,7 @@ export default function CaseStudyClient({ project }: { project: Project }) {
             {project.inlineLocalVideos
               ?.filter((v) => v.after === 'insight')
               .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} />
+                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
               ))}
           </>
         )}
@@ -187,7 +188,7 @@ export default function CaseStudyClient({ project }: { project: Project }) {
             {project.inlineLocalVideos
               ?.filter((v) => v.after === 'solution')
               .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} />
+                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
               ))}
           </>
         )}
@@ -217,7 +218,7 @@ export default function CaseStudyClient({ project }: { project: Project }) {
             {project.inlineLocalVideos
               ?.filter((v) => v.after === 'whatIBuilt')
               .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} />
+                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
               ))}
           </>
         )}
@@ -247,7 +248,7 @@ export default function CaseStudyClient({ project }: { project: Project }) {
             {project.inlineLocalVideos
               ?.filter((v) => v.after === 'decisions')
               .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} />
+                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
               ))}
           </>
         )}
@@ -284,7 +285,7 @@ export default function CaseStudyClient({ project }: { project: Project }) {
             {project.inlineLocalVideos
               ?.filter((v) => v.after === 'systemModes')
               .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} />
+                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
               ))}
           </>
         )}
@@ -314,7 +315,7 @@ export default function CaseStudyClient({ project }: { project: Project }) {
             {project.inlineLocalVideos
               ?.filter((v) => v.after === 'results')
               .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} />
+                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
               ))}
           </>
         )}
@@ -344,7 +345,7 @@ export default function CaseStudyClient({ project }: { project: Project }) {
             {project.inlineLocalVideos
               ?.filter((v) => v.after === 'iteration')
               .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} />
+                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
               ))}
           </>
         )}
@@ -367,7 +368,7 @@ export default function CaseStudyClient({ project }: { project: Project }) {
             {project.inlineLocalVideos
               ?.filter((v) => v.after === 'outcome')
               .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} />
+                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
               ))}
           </>
         )}
@@ -397,7 +398,7 @@ export default function CaseStudyClient({ project }: { project: Project }) {
             {project.inlineLocalVideos
               ?.filter((v) => v.after === 'learnings')
               .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} />
+                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
               ))}
           </>
         )}
@@ -420,7 +421,7 @@ export default function CaseStudyClient({ project }: { project: Project }) {
             {project.inlineLocalVideos
               ?.filter((v) => v.after === 'status')
               .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} />
+                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
               ))}
           </>
         )}
@@ -450,7 +451,7 @@ export default function CaseStudyClient({ project }: { project: Project }) {
             {project.inlineLocalVideos
               ?.filter((v) => v.after === 'nextSteps')
               .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} />
+                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
               ))}
           </>
         )}

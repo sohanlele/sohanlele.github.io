@@ -4,8 +4,8 @@ import { Navbar } from '@/components/navbar'
 
 
 export const metadata: Metadata = {
-  title: 'Sohan Lele — Product Design Engineer & Founder',
-  description: 'Product design engineer building hardware. Co-Founder & CEO at IRIX.',
+  title: 'Sohan Lele | Product Design Engineer, Robotics & Hardware',
+  description: 'Product design engineer in robotics and hardware, with hands-on perception and sensor-fusion work. Co-Founder at IRIX.',
   authors: [{ name: 'Sohan Lele' }],
   creator: 'Sohan Lele',
   openGraph: {

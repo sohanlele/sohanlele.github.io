@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Download, ExternalLink } from 'lucide-react'
 import { basePath } from '@/lib/utils'
 
-const resumePdf = basePath + "/files/sohan_lele_resume.pdf?v=2"
+const resumePdf = basePath + "/files/sohan_lele_resume.pdf?v=3"
 
 export default function ResumePage() {
   return (

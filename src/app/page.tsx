@@ -12,13 +12,13 @@ export default function HomePage() {
 
         <div className="mt-8 space-y-8">
           <p className="text-[16px] md:text-[18px] leading-[1.7] text-[#374151]">
-            I'm a product design engineer with a strong interest in hardware and robotics. I enjoy technical problem solving, but I'm just as focused on how those systems turn into products people actually interact with.
+            I'm a product design engineer in robotics and hardware. I design mechanisms and physical products, and I also build the perception and sensor-fusion side that makes them work: computer vision, signal processing, and state estimation.
           </p>
           <p className="text-[16px] md:text-[18px] leading-[1.7] text-[#374151]">
             I like thinking through tradeoffs, especially where engineering decisions shape usability, reliability, and real-world performance. I enjoy working close to execution and taking on team leadership when needed, particularly in fast-moving or ambiguous environments.
           </p>
           <p className="text-[16px] md:text-[18px] leading-[1.7] text-[#374151]">
-            Outside of engineering, I spend a lot of time in the gym lifting and training MMA. I'm also currently building a startup focused on automating personal training for gyms. You can learn more about IRIX at{' '}
+            Outside of engineering, I spend a lot of time in the gym lifting and training MMA. I'm also building IRIX, an AI fitness coach that runs on the wearables people already own. You can learn more at{' '}
             <a
               href="https://tryirix.com/"
               target="_blank"

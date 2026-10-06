@@ -1,6 +1,6 @@
 import { basePath } from '@/lib/utils'
 
-const resumePdf = basePath + '/files/sohan_lele_resume.pdf?v=3'
+const resumePdf = basePath + '/files/sohan_lele_resume.pdf?v=4'
 
 export default function ResumePage() {
   return (

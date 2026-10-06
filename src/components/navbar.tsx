@@ -25,7 +25,7 @@ export function Navbar() {
           </li>
           <li>
             <a
-              href={basePath + '/files/sohan_lele_resume.pdf?v=3'}
+              href={basePath + '/files/sohan_lele_resume.pdf?v=4'}
               target="_blank"
               rel="noopener noreferrer"
               className={linkClass}

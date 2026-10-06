@@ -41,7 +41,7 @@ export default function HomePage() {
               View projects
             </Link>
             <a
-              href={basePath + '/files/sohan_lele_resume.pdf?v=3'}
+              href={basePath + '/files/sohan_lele_resume.pdf?v=4'}
               target="_blank"
               rel="noopener noreferrer"
               className="link text-[15px]"

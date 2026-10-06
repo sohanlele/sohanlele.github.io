@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="Geist, system-ui, sans-serif" role="img" aria-label="Structure of the simulation test harness">
+<rect width="1200" height="800" fill="#e9e4da"/>
+<text x="60" y="92" font-family="Geist Mono, monospace" font-size="14" letter-spacing="2" fill="#6f6a62">TEST SUITES</text>
+<rect x="60.0" y="112" width="142.28571428571428" height="84" rx="10" fill="#f3efe7" stroke="#1c1a17" stroke-opacity="0.18"/>
+<text x="131.14285714285714" y="160.0" text-anchor="middle" font-size="16" font-weight="500" fill="#1c1a17">Scene spawn</text>
+<rect x="216.28571428571428" y="112" width="142.28571428571428" height="84" rx="10" fill="#f3efe7" stroke="#1c1a17" stroke-opacity="0.18"/>
+<text x="287.42857142857144" y="160.0" text-anchor="middle" font-size="16" font-weight="500" fill="#1c1a17">Cup</text>
+<rect x="372.57142857142856" y="112" width="142.28571428571428" height="84" rx="10" fill="#f3efe7" stroke="#1c1a17" stroke-opacity="0.18"/>
+<text x="443.71428571428567" y="160.0" text-anchor="middle" font-size="16" font-weight="500" fill="#1c1a17">Dispenser</text>
+<rect x="528.8571428571429" y="112" width="142.28571428571428" height="84" rx="10" fill="#f3efe7" stroke="#1c1a17" stroke-opacity="0.18"/>
+<text x="600.0" y="160.0" text-anchor="middle" font-size="16" font-weight="500" fill="#1c1a17">Turntable</text>
+<rect x="685.1428571428571" y="112" width="142.28571428571428" height="84" rx="10" fill="#f3efe7" stroke="#1c1a17" stroke-opacity="0.18"/>
+<text x="756.2857142857142" y="160.0" text-anchor="middle" font-size="16" font-weight="500" fill="#1c1a17">Robot arms</text>
+<rect x="841.4285714285713" y="112" width="142.28571428571428" height="84" rx="10" fill="#f3efe7" stroke="#1c1a17" stroke-opacity="0.18"/>
+<text x="912.5714285714284" y="160.0" text-anchor="middle" font-size="16" font-weight="500" fill="#1c1a17">Integration</text>
+<rect x="997.7142857142857" y="112" width="142.28571428571428" height="84" rx="10" fill="#f3efe7" stroke="#1c1a17" stroke-opacity="0.18"/>
+<text x="1068.857142857143" y="160.0" text-anchor="middle" font-size="16" font-weight="500" fill="#1c1a17">Stress</text>
+<path d="M600.0 206 V258 m-8 -10 l8 10 l8 -10" fill="none" stroke="#1f5c3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="60" y="300" font-family="Geist Mono, monospace" font-size="14" letter-spacing="2" fill="#6f6a62">BASE HARNESS</text>
+<rect x="60" y="320" width="1080" height="120" rx="10" fill="#f3efe7" stroke="#1c1a17" stroke-opacity="0.18"/>
+<text x="600.0" y="374.0" text-anchor="middle" font-size="22" font-weight="500" fill="#1c1a17">Shared test harness</text>
+<text x="600.0" y="402.0" text-anchor="middle" font-size="15" fill="#6f6a62">ROS and Gazebo service calls · assertions with tolerances · JSON log of every result</text>
+<path d="M600.0 450 V502 m-8 -10 l8 10 l8 -10" fill="none" stroke="#1f5c3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="60" y="544" font-family="Geist Mono, monospace" font-size="14" letter-spacing="2" fill="#6f6a62">SIMULATION UNDER TEST</text>
+<rect x="60.0" y="564" width="256.5" height="120" rx="10" fill="#f3efe7" stroke="#1c1a17" stroke-opacity="0.18"/>
+<text x="188.25" y="618.0" text-anchor="middle" font-size="22" font-weight="500" fill="#1c1a17">Two Franka arms</text>
+<text x="188.25" y="646.0" text-anchor="middle" font-size="15" fill="#6f6a62">7 joints each</text>
+<rect x="334.5" y="564" width="256.5" height="120" rx="10" fill="#f3efe7" stroke="#1c1a17" stroke-opacity="0.18"/>
+<text x="462.75" y="618.0" text-anchor="middle" font-size="22" font-weight="500" fill="#1c1a17">Turntable</text>
+<text x="462.75" y="646.0" text-anchor="middle" font-size="15" fill="#6f6a62">velocity controlled</text>
+<rect x="609.0" y="564" width="256.5" height="120" rx="10" fill="#f3efe7" stroke="#1c1a17" stroke-opacity="0.18"/>
+<text x="737.25" y="618.0" text-anchor="middle" font-size="22" font-weight="500" fill="#1c1a17">Six dispensers</text>
+<text x="737.25" y="646.0" text-anchor="middle" font-size="15" fill="#6f6a62">spring-return levers</text>
+<rect x="883.5" y="564" width="256.5" height="120" rx="10" fill="#f3efe7" stroke="#1c1a17" stroke-opacity="0.18"/>
+<text x="1011.75" y="618.0" text-anchor="middle" font-size="22" font-weight="500" fill="#1c1a17">Cup</text>
+<text x="1011.75" y="646.0" text-anchor="middle" font-size="15" fill="#6f6a62">0.15 kg, friction contact</text>
+</svg>

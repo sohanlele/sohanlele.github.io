@@ -1,31 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1734 220" font-family="DM Sans, system-ui, sans-serif" role="img" aria-label="Camera and wristband tracking: data flow">
-<rect width="1734" height="220" fill="#f7f6f3"/>
-<text x="30" y="44" font-size="20" font-weight="700" fill="#0b0d12">Camera and wristband tracking: data flow</text>
-<rect x="30" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#166534" stroke-width="1.5"/>
-<text x="135.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#0b0d12">Wristband</text>
-<text x="135.0" y="140" text-anchor="middle" font-size="12.5" fill="#4b5563">motion sensor + ID</text>
-<path d="M245 124.0 H267 m-7 -6 l7 6 l-7 6" fill="none" stroke="#166534" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="274" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#166534" stroke-width="1.5"/>
-<text x="379.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#0b0d12">Gateways</text>
-<text x="379.0" y="140" text-anchor="middle" font-size="12.5" fill="#4b5563">radio link to the edge</text>
-<path d="M489 124.0 H511 m-7 -6 l7 6 l-7 6" fill="none" stroke="#166534" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="518" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#166534" stroke-width="1.5"/>
-<text x="623.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#0b0d12">Edge server</text>
-<text x="623.0" y="140" text-anchor="middle" font-size="12.5" fill="#4b5563">local, low latency</text>
-<path d="M733 124.0 H755 m-7 -6 l7 6 l-7 6" fill="none" stroke="#166534" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="762" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#166534" stroke-width="1.5"/>
-<text x="867.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#0b0d12">Identity fusion</text>
-<text x="867.0" y="140" text-anchor="middle" font-size="12.5" fill="#4b5563">motion match, no faces</text>
-<path d="M977 124.0 H999 m-7 -6 l7 6 l-7 6" fill="none" stroke="#166534" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="1006" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#166534" stroke-width="1.5"/>
-<text x="1111.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#0b0d12">Camera pipeline</text>
-<text x="1111.0" y="140" text-anchor="middle" font-size="12.5" fill="#4b5563">pose and position</text>
-<path d="M1221 124.0 H1243 m-7 -6 l7 6 l-7 6" fill="none" stroke="#166534" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="1250" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#166534" stroke-width="1.5"/>
-<text x="1355.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#0b0d12">Rep + exercise models</text>
-<text x="1355.0" y="140" text-anchor="middle" font-size="12.5" fill="#4b5563">fused count per set</text>
-<path d="M1465 124.0 H1487 m-7 -6 l7 6 l-7 6" fill="none" stroke="#166534" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="1494" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#166534" stroke-width="1.5"/>
-<text x="1599.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#0b0d12">App + dashboard</text>
-<text x="1599.0" y="140" text-anchor="middle" font-size="12.5" fill="#4b5563">member and gym views</text>
-<text x="30" y="204" font-size="12.5" fill="#4b5563">Position and velocity are fused with an Extended Kalman Filter. Zero-velocity updates at each rep bound drift.</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1734 220" font-family="Geist, system-ui, sans-serif" role="img" aria-label="Camera and wristband tracking: data flow">
+<rect width="1734" height="220" fill="#f3efe7"/>
+<text x="30" y="44" font-size="20" font-weight="700" fill="#1c1a17">Camera and wristband tracking: data flow</text>
+<rect x="30" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#1f5c3a" stroke-width="1.5"/>
+<text x="135.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#1c1a17">Wristband</text>
+<text x="135.0" y="140" text-anchor="middle" font-size="12.5" fill="#6f6a62">motion sensor + ID</text>
+<path d="M245 124.0 H267 m-7 -6 l7 6 l-7 6" fill="none" stroke="#1f5c3a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="274" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#1f5c3a" stroke-width="1.5"/>
+<text x="379.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#1c1a17">Gateways</text>
+<text x="379.0" y="140" text-anchor="middle" font-size="12.5" fill="#6f6a62">radio link to the edge</text>
+<path d="M489 124.0 H511 m-7 -6 l7 6 l-7 6" fill="none" stroke="#1f5c3a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="518" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#1f5c3a" stroke-width="1.5"/>
+<text x="623.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#1c1a17">Edge server</text>
+<text x="623.0" y="140" text-anchor="middle" font-size="12.5" fill="#6f6a62">local, low latency</text>
+<path d="M733 124.0 H755 m-7 -6 l7 6 l-7 6" fill="none" stroke="#1f5c3a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="762" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#1f5c3a" stroke-width="1.5"/>
+<text x="867.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#1c1a17">Identity fusion</text>
+<text x="867.0" y="140" text-anchor="middle" font-size="12.5" fill="#6f6a62">motion match, no faces</text>
+<path d="M977 124.0 H999 m-7 -6 l7 6 l-7 6" fill="none" stroke="#1f5c3a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1006" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#1f5c3a" stroke-width="1.5"/>
+<text x="1111.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#1c1a17">Camera pipeline</text>
+<text x="1111.0" y="140" text-anchor="middle" font-size="12.5" fill="#6f6a62">pose and position</text>
+<path d="M1221 124.0 H1243 m-7 -6 l7 6 l-7 6" fill="none" stroke="#1f5c3a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1250" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#1f5c3a" stroke-width="1.5"/>
+<text x="1355.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#1c1a17">Rep + exercise models</text>
+<text x="1355.0" y="140" text-anchor="middle" font-size="12.5" fill="#6f6a62">fused count per set</text>
+<path d="M1465 124.0 H1487 m-7 -6 l7 6 l-7 6" fill="none" stroke="#1f5c3a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1494" y="76" width="210" height="96" rx="8" fill="#ffffff" stroke="#1f5c3a" stroke-width="1.5"/>
+<text x="1599.0" y="116" text-anchor="middle" font-size="16" font-weight="600" fill="#1c1a17">App + dashboard</text>
+<text x="1599.0" y="140" text-anchor="middle" font-size="12.5" fill="#6f6a62">member and gym views</text>
+<text x="30" y="204" font-size="12.5" fill="#6f6a62">Position and velocity are fused with an Extended Kalman Filter. Zero-velocity updates at each rep bound drift.</text></svg>

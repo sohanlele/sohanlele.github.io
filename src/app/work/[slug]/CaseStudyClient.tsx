@@ -1,470 +1,222 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import type { Project } from '@/content/projects'
-import { basePath } from '@/lib/utils'
+import { basePath, splitTitle } from '@/lib/utils'
+import { Reveal } from '@/components/reveal'
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+type SectionKey =
+  | 'problem'
+  | 'insight'
+  | 'solution'
+  | 'whatIBuilt'
+  | 'decisions'
+  | 'systemModes'
+  | 'results'
+  | 'iteration'
+  | 'outcome'
+  | 'learnings'
+  | 'status'
+  | 'nextSteps'
+
+const sections: { key: SectionKey; title: string }[] = [
+  { key: 'problem', title: 'Problem' },
+  { key: 'insight', title: 'Insight' },
+  { key: 'solution', title: 'Solution' },
+  { key: 'whatIBuilt', title: 'What I built' },
+  { key: 'decisions', title: 'Decisions' },
+  { key: 'systemModes', title: 'How it works' },
+  { key: 'results', title: 'Results' },
+  { key: 'iteration', title: 'Iteration' },
+  { key: 'outcome', title: 'Outcome' },
+  { key: 'learnings', title: 'Learnings' },
+  { key: 'status', title: 'Status' },
+  { key: 'nextSteps', title: 'Next' },
+]
+
+function Bullets({ items }: { items: string[] }) {
   return (
-    <section className="py-14 border-t border-[#e0ddd8]">
-      <h2 className="text-[11px] font-medium tracking-[0.12em] uppercase text-[#166534] mb-6">
-        {title}
-      </h2>
-      <div className="prose prose-neutral max-w-none">{children}</div>
-    </section>
+    <ul className="space-y-3.5">
+      {items.map((item, i) => (
+        <li key={i} className="grid grid-cols-[1.25rem_1fr] text-pretty">
+          <span aria-hidden className="mt-[0.72em] h-px w-2.5 bg-muted/60" />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
   )
 }
 
-function InlineImageBlock({ src, alt }: { src: string; alt: string }) {
-  return (
-    <div className="py-10 -mx-5 sm:-mx-8">
-      <div className="max-w-6xl mx-auto">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={basePath + src}
-          alt={alt}
-          className="w-full h-auto block"
-        />
-      </div>
-    </div>
-  )
-}
+/** Images and videos attached to one section. Two or more images flow into two columns. */
+function Media({ project, after }: { project: Project; after: SectionKey }) {
+  const images = project.inlineImages?.filter((m) => m.after === after) ?? []
+  const youtube = project.inlineVideos?.filter((m) => m.after === after) ?? []
+  const local = project.inlineLocalVideos?.filter((m) => m.after === after) ?? []
+  if (images.length + youtube.length + local.length === 0) return null
 
-function InlineVideoBlock({ youtubeId }: { youtubeId: string }) {
   return (
-    <div className="py-10">
-      <div className="max-w-xl mx-auto">
-        <div className="relative aspect-video overflow-hidden bg-[#0b0d12] rounded-lg">
-          <iframe
-            src={`https://www.youtube.com/embed/${youtubeId}`}
-            title="YouTube video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="absolute inset-0 w-full h-full"
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function InlineLocalVideoBlock({ src, caption }: { src: string; caption?: string }) {
-  return (
-    <div className="py-10 -mx-5 sm:-mx-8">
-      <div className="max-w-3xl mx-auto">
-        <div className="relative aspect-video overflow-hidden bg-[#0b0d12] rounded-lg">
-          <video
-            controls
-            playsInline
-            preload="metadata"
-            className="absolute inset-0 w-full h-full object-contain"
-          >
-            <source src={basePath + src} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        {caption && <p className="mt-3 px-5 sm:px-8 text-sm text-[#4b5563]">{caption}</p>}
-      </div>
-    </div>
-  )
-}
-
-export default function CaseStudyClient({ project }: { project: Project }) {
-  return (
-    <div className="min-h-screen bg-[#f7f6f3]">
-      {/* Header */}
-      <header className="pt-24 pb-16 md:pt-28 px-5 sm:px-8">
-        <div className="max-w-2xl mx-auto">
-          <Link
-            href="/projects"
-            className="text-xs text-[#4b5563] hover:text-[#166534] transition-colors mb-8 inline-block"
-          >
-            ← back to projects
-          </Link>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-[#4b5563] mb-2">
-            <span>{project.year}</span>
-            {project.context && <span>{project.context}</span>}
-            {project.role && <span>{project.role}</span>}
-          </div>
-          <h1 className="text-[30px] leading-tight sm:text-[34px] md:text-[40px] font-bold tracking-tight text-[#0b0d12]">
-            {project.title}
-          </h1>
-          <p className="text-[16px] md:text-[18px] text-[#374151] mt-4 leading-[1.7]">{project.oneLiner}</p>
-          {project.links && project.links.length > 0 && (
-            <a
-              href={project.links[0].href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-6 px-4 py-2.5 rounded-md bg-[#166534] text-white text-sm font-medium hover:bg-[#14502d] transition-colors focus:outline-none focus:ring-2 focus:ring-[#166534] focus:ring-offset-2 focus:ring-offset-[#f7f6f3]"
-            >
-              {project.links[0].label}
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-          )}
-        </div>
-      </header>
-
-      {project.heroImage && (
-        <div className="max-w-4xl mx-auto px-5 sm:px-8 mb-8">
-          <div className="relative aspect-video overflow-hidden">
-            <Image
-              src={basePath + project.heroImage}
-              alt={project.title}
-              fill
-              className="object-contain"
-              priority
-              sizes="(max-width: 768px) 100vw, 896px"
-            />
-          </div>
+    <div className="mt-10 space-y-6">
+      {images.length > 0 && (
+        <div className={images.length > 1 ? 'sm:columns-2 gap-5 [&>*]:mb-5' : ''}>
+          {images.map((img, i) => (
+            <figure key={i} className="break-inside-avoid">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={basePath + img.src}
+                alt={img.alt ?? project.title}
+                loading="lazy"
+                className={`frame block h-auto ${
+                  images.length > 1 ? 'w-full' : 'mx-auto max-h-[560px] w-auto max-w-full'
+                }`}
+              />
+              {img.alt && (
+                <figcaption aria-hidden className="mt-2.5 text-[13px] leading-[1.5] text-muted text-pretty">
+                  {img.alt}
+                </figcaption>
+              )}
+            </figure>
+          ))}
         </div>
       )}
 
-      {/* Case study content */}
-      <article className="max-w-2xl mx-auto px-5 sm:px-8 py-16">
-        {project.problem && (
-          <>
-            <Section title="Problem">
-              <p className="text-[#374151] leading-[1.7]">{project.problem}</p>
-            </Section>
-            {project.inlineImages
-              ?.filter((img) => img.after === 'problem')
-              .map((img, i) => (
-                <InlineImageBlock key={i} src={img.src} alt={img.alt ?? project.title} />
-              ))}
-            {project.inlineVideos
-              ?.filter((v) => v.after === 'problem')
-              .map((v, i) => (
-                <InlineVideoBlock key={i} youtubeId={v.youtubeId} />
-              ))}
-            {project.inlineLocalVideos
-              ?.filter((v) => v.after === 'problem')
-              .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
-              ))}
-          </>
-        )}
-
-        {project.insight && (
-          <>
-            <Section title="Insight">
-              <p className="text-[#374151] leading-[1.7]">{project.insight}</p>
-            </Section>
-            {project.inlineImages
-              ?.filter((img) => img.after === 'insight')
-              .map((img, i) => (
-                <InlineImageBlock key={i} src={img.src} alt={img.alt ?? project.title} />
-              ))}
-            {project.inlineVideos
-              ?.filter((v) => v.after === 'insight')
-              .map((v, i) => (
-                <InlineVideoBlock key={i} youtubeId={v.youtubeId} />
-              ))}
-            {project.inlineLocalVideos
-              ?.filter((v) => v.after === 'insight')
-              .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
-              ))}
-          </>
-        )}
-
-        {project.solution && (
-          <>
-            <Section title="Solution">
-              <p className="text-[#374151] leading-[1.7]">{project.solution}</p>
-            </Section>
-            {project.inlineImages
-              ?.filter((img) => img.after === 'solution')
-              .map((img, i) => (
-                <InlineImageBlock key={i} src={img.src} alt={img.alt ?? project.title} />
-              ))}
-            {project.inlineVideos
-              ?.filter((v) => v.after === 'solution')
-              .map((v, i) => (
-                <InlineVideoBlock key={i} youtubeId={v.youtubeId} />
-              ))}
-            {project.inlineLocalVideos
-              ?.filter((v) => v.after === 'solution')
-              .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
-              ))}
-          </>
-        )}
-
-        {project.whatIBuilt && project.whatIBuilt.length > 0 && (
-          <>
-            <Section title="What I built">
-              <ul className="list-none space-y-2 text-[#374151]">
-                {project.whatIBuilt.map((item, i) => (
-                  <li key={i} className="flex gap-3">
-                    <span className="text-[#9ca3af]">—</span>
-                    <span className="text-[#374151]">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </Section>
-            {project.inlineImages
-              ?.filter((img) => img.after === 'whatIBuilt')
-              .map((img, i) => (
-                <InlineImageBlock key={i} src={img.src} alt={img.alt ?? project.title} />
-              ))}
-            {project.inlineVideos
-              ?.filter((v) => v.after === 'whatIBuilt')
-              .map((v, i) => (
-                <InlineVideoBlock key={i} youtubeId={v.youtubeId} />
-              ))}
-            {project.inlineLocalVideos
-              ?.filter((v) => v.after === 'whatIBuilt')
-              .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
-              ))}
-          </>
-        )}
-
-        {project.decisions && project.decisions.length > 0 && (
-          <>
-            <Section title="Engineering + design decisions">
-              <ul className="list-none space-y-2 text-[#374151]">
-                {project.decisions.map((item, i) => (
-                  <li key={i} className="flex gap-3">
-                    <span className="text-[#9ca3af]">—</span>
-                    <span className="text-[#374151]">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </Section>
-            {project.inlineImages
-              ?.filter((img) => img.after === 'decisions')
-              .map((img, i) => (
-                <InlineImageBlock key={i} src={img.src} alt={img.alt ?? project.title} />
-              ))}
-            {project.inlineVideos
-              ?.filter((v) => v.after === 'decisions')
-              .map((v, i) => (
-                <InlineVideoBlock key={i} youtubeId={v.youtubeId} />
-              ))}
-            {project.inlineLocalVideos
-              ?.filter((v) => v.after === 'decisions')
-              .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
-              ))}
-          </>
-        )}
-
-        {project.systemModes && project.systemModes.length > 0 && (
-          <>
-            <Section title="System modes">
-              <div className="space-y-8">
-                {project.systemModes.map((mode, i) => (
-                  <div key={i}>
-                    <h3 className="text-sm font-medium text-[#0b0d12] mb-3">{mode.name}</h3>
-                    <ul className="list-none space-y-2 text-[#374151]">
-                      {mode.items.map((item, j) => (
-                        <li key={j} className="flex gap-3">
-                          <span className="text-[#9ca3af]">—</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </Section>
-            {project.inlineImages
-              ?.filter((img) => img.after === 'systemModes')
-              .map((img, i) => (
-                <InlineImageBlock key={i} src={img.src} alt={img.alt ?? project.title} />
-              ))}
-            {project.inlineVideos
-              ?.filter((v) => v.after === 'systemModes')
-              .map((v, i) => (
-                <InlineVideoBlock key={i} youtubeId={v.youtubeId} />
-              ))}
-            {project.inlineLocalVideos
-              ?.filter((v) => v.after === 'systemModes')
-              .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
-              ))}
-          </>
-        )}
-
-        {project.results && project.results.length > 0 && (
-          <>
-            <Section title="Results">
-              <ul className="list-none space-y-2">
-                {project.results.map((item, i) => (
-                  <li key={i} className="flex gap-3">
-                    <span className="text-[#9ca3af]">—</span>
-                    <span className="text-[#374151]">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </Section>
-            {project.inlineImages
-              ?.filter((img) => img.after === 'results')
-              .map((img, i) => (
-                <InlineImageBlock key={i} src={img.src} alt={img.alt ?? project.title} />
-              ))}
-            {project.inlineVideos
-              ?.filter((v) => v.after === 'results')
-              .map((v, i) => (
-                <InlineVideoBlock key={i} youtubeId={v.youtubeId} />
-              ))}
-            {project.inlineLocalVideos
-              ?.filter((v) => v.after === 'results')
-              .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
-              ))}
-          </>
-        )}
-
-        {project.iteration && project.iteration.length > 0 && (
-          <>
-            <Section title="Iteration and failures">
-              <ul className="list-none space-y-2 text-[#374151]">
-                {project.iteration.map((item, i) => (
-                  <li key={i} className="flex gap-3">
-                    <span className="text-[#9ca3af]">—</span>
-                    <span className="text-[#374151]">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </Section>
-            {project.inlineImages
-              ?.filter((img) => img.after === 'iteration')
-              .map((img, i) => (
-                <InlineImageBlock key={i} src={img.src} alt={img.alt ?? project.title} />
-              ))}
-            {project.inlineVideos
-              ?.filter((v) => v.after === 'iteration')
-              .map((v, i) => (
-                <InlineVideoBlock key={i} youtubeId={v.youtubeId} />
-              ))}
-            {project.inlineLocalVideos
-              ?.filter((v) => v.after === 'iteration')
-              .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
-              ))}
-          </>
-        )}
-
-        {project.outcome && (
-          <>
-            <Section title="Outcome">
-              <p className="text-[#374151] leading-[1.7]">{project.outcome}</p>
-            </Section>
-            {project.inlineImages
-              ?.filter((img) => img.after === 'outcome')
-              .map((img, i) => (
-                <InlineImageBlock key={i} src={img.src} alt={img.alt ?? project.title} />
-              ))}
-            {project.inlineVideos
-              ?.filter((v) => v.after === 'outcome')
-              .map((v, i) => (
-                <InlineVideoBlock key={i} youtubeId={v.youtubeId} />
-              ))}
-            {project.inlineLocalVideos
-              ?.filter((v) => v.after === 'outcome')
-              .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
-              ))}
-          </>
-        )}
-
-        {project.learnings && project.learnings.length > 0 && (
-          <>
-            <Section title="Learnings">
-              <ul className="list-none space-y-2 text-[#374151]">
-                {project.learnings.map((item, i) => (
-                  <li key={i} className="flex gap-3">
-                    <span className="text-[#9ca3af]">—</span>
-                    <span className="text-[#374151]">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </Section>
-            {project.inlineImages
-              ?.filter((img) => img.after === 'learnings')
-              .map((img, i) => (
-                <InlineImageBlock key={i} src={img.src} alt={img.alt ?? project.title} />
-              ))}
-            {project.inlineVideos
-              ?.filter((v) => v.after === 'learnings')
-              .map((v, i) => (
-                <InlineVideoBlock key={i} youtubeId={v.youtubeId} />
-              ))}
-            {project.inlineLocalVideos
-              ?.filter((v) => v.after === 'learnings')
-              .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
-              ))}
-          </>
-        )}
-
-        {project.status && (
-          <>
-            <Section title="Current status">
-              <p className="text-[#374151] leading-[1.7]">{project.status}</p>
-            </Section>
-            {project.inlineImages
-              ?.filter((img) => img.after === 'status')
-              .map((img, i) => (
-                <InlineImageBlock key={i} src={img.src} alt={img.alt ?? project.title} />
-              ))}
-            {project.inlineVideos
-              ?.filter((v) => v.after === 'status')
-              .map((v, i) => (
-                <InlineVideoBlock key={i} youtubeId={v.youtubeId} />
-              ))}
-            {project.inlineLocalVideos
-              ?.filter((v) => v.after === 'status')
-              .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
-              ))}
-          </>
-        )}
-
-        {project.nextSteps && project.nextSteps.length > 0 && (
-          <>
-            <Section title="What I'd do next">
-              <ul className="list-none space-y-2 text-[#374151]">
-                {project.nextSteps.map((item, i) => (
-                  <li key={i} className="flex gap-3">
-                    <span className="text-[#9ca3af]">—</span>
-                    <span className="text-[#374151]">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </Section>
-            {project.inlineImages
-              ?.filter((img) => img.after === 'nextSteps')
-              .map((img, i) => (
-                <InlineImageBlock key={i} src={img.src} alt={img.alt ?? project.title} />
-              ))}
-            {project.inlineVideos
-              ?.filter((v) => v.after === 'nextSteps')
-              .map((v, i) => (
-                <InlineVideoBlock key={i} youtubeId={v.youtubeId} />
-              ))}
-            {project.inlineLocalVideos
-              ?.filter((v) => v.after === 'nextSteps')
-              .map((v, i) => (
-                <InlineLocalVideoBlock key={i} src={v.src} caption={v.caption} />
-              ))}
-          </>
-        )}
-
-        <div className="pt-16 border-t border-[#e0ddd8] mt-16">
-          <Link
-            href="/projects"
-            className="text-xs font-medium text-[#4b5563] hover:text-[#166534] transition-colors"
-          >
-            ← View all projects
-          </Link>
+      {youtube.map((v, i) => (
+        <div key={i} className="frame relative aspect-video overflow-hidden">
+          <iframe
+            src={`https://www.youtube.com/embed/${v.youtubeId}`}
+            title="YouTube video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            className="absolute inset-0 h-full w-full"
+          />
         </div>
+      ))}
+
+      {local.length > 0 && (
+        <div className={local.length > 1 ? 'grid gap-5 sm:grid-cols-2' : ''}>
+          {local.map((v, i) => (
+            <figure key={i}>
+              <div className="frame relative aspect-video overflow-hidden bg-ink">
+                <video controls playsInline preload="metadata" className="absolute inset-0 h-full w-full object-contain">
+                  <source src={basePath + v.src} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              {v.caption && <figcaption className="mt-2.5 text-[13px] text-muted">{v.caption}</figcaption>}
+            </figure>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function SectionBody({ project, k }: { project: Project; k: SectionKey }) {
+  const value = project[k]
+  if (typeof value === 'string') return <p className="text-pretty">{value}</p>
+  if (k === 'systemModes' && project.systemModes) {
+    return (
+      <div className="space-y-9">
+        {project.systemModes.map((mode, i) => (
+          <div key={i}>
+            <h3 className="mb-3.5 text-[15px] font-medium text-ink">{mode.name}</h3>
+            <Bullets items={mode.items} />
+          </div>
+        ))}
+      </div>
+    )
+  }
+  return <Bullets items={value as string[]} />
+}
+
+export default function CaseStudyClient({ project }: { project: Project }) {
+  const { kicker, name } = splitTitle(project.title, project.nameFirst)
+  const link = project.links?.[0]
+  const facts = [
+    { label: 'Role', value: project.role },
+    { label: 'Timeline', value: project.context },
+    { label: 'Focus', value: project.tags?.slice(0, 5).join(' · ') },
+  ].filter((f) => f.value)
+
+  return (
+    <div className="max-w-5xl mx-auto px-5 sm:px-8 pt-28 pb-24 md:pt-36 md:pb-32">
+      <header>
+        <Reveal>
+          <Link href="/projects" className="label transition-colors duration-200 hover:text-ink">
+            ← Projects
+          </Link>
+          {kicker && <p className="mt-10 text-[17px] text-muted">{kicker}</p>}
+          <h1
+            className={`${
+              kicker ? 'mt-2' : 'mt-10'
+            } max-w-[18ch] font-serif text-ink text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.02] tracking-[-0.02em]`}
+          >
+            {name}
+          </h1>
+        </Reveal>
+        <Reveal i={1}>
+          <p className="mt-7 max-w-[60ch] text-[19px] md:text-[21px] leading-[1.5] text-ink text-pretty">
+            {project.oneLiner}
+          </p>
+          {link && (
+            <a
+              href={link.href}
+              target={link.href.startsWith('http') ? '_blank' : undefined}
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex items-center rounded-md bg-ink px-5 py-2.5 text-[15px] text-canvas transition-transform duration-150 ease-out active:scale-[0.98]"
+            >
+              {link.label}
+            </a>
+          )}
+        </Reveal>
+        <Reveal i={2}>
+          <dl className="mt-12 grid gap-x-10 gap-y-6 border-y border-line py-6 sm:grid-cols-3">
+            {facts.map((f) => (
+              <div key={f.label}>
+                <dt className="label">{f.label}</dt>
+                <dd className="mt-2 text-[14px] leading-[1.55] text-body">{f.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </Reveal>
+      </header>
+
+      {project.heroImage && (
+        <Reveal i={3} className="mt-12 md:mt-16">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={basePath + project.heroImage}
+            alt=""
+            className="frame mx-auto block h-auto max-h-[640px] w-auto max-w-full"
+          />
+        </Reveal>
+      )}
+
+      <article className="mt-8 md:mt-12">
+        {sections.map(({ key, title }) => {
+          const value = project[key]
+          if (!value || (Array.isArray(value) && value.length === 0)) return null
+          return (
+            <section
+              key={key}
+              className="grid gap-x-12 gap-y-5 border-t border-line py-12 md:grid-cols-[9.5rem_minmax(0,1fr)] md:py-16 first:border-t-0"
+            >
+              <h2 className="label md:sticky md:top-24 md:self-start md:pt-1.5">{title}</h2>
+              <Reveal>
+                <div className="max-w-[68ch] text-[17px] leading-[1.65] text-body">
+                  <SectionBody project={project} k={key} />
+                </div>
+                <Media project={project} after={key} />
+              </Reveal>
+            </section>
+          )
+        })}
       </article>
+
+      <div className="mt-8 border-t border-line pt-10">
+        <Link href="/projects" className="link text-[15px]">
+          All projects
+        </Link>
+      </div>
     </div>
   )
 }

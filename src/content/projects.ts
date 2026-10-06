@@ -1,6 +1,8 @@
 export type Project = {
   slug: string
   title: string
+  /** True when the part of the title before " | " is the project name (the default treats it as the organisation). */
+  nameFirst?: boolean
   year: string
   oneLiner: string
   heroImage?: string
@@ -40,16 +42,112 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: 'irix-coach',
+    title: 'IRIX | An App That Optimizes Your Health',
+    year: '2026',
+    heroImage: '/images/irix-coach/hero.jpg',
+    oneLiner:
+      'An iOS app that uses your own wearable data to optimize your health. Each morning it turns last night into one word and three decisions, in under 30 seconds. No score, no streaks, no feed. In TestFlight beta.',
+    role: 'Co-Founder',
+    context: 'Jul 2026 – Present · iOS app in TestFlight beta · Built with my co-founder',
+    tags: ['Product Design', 'iOS', 'SwiftUI', 'HealthKit', 'Wearable Data', 'On-Device Computation', 'UX'],
+    problem:
+      'People who train and wear an Apple Watch, WHOOP, Oura, or Garmin get a lot of data and little direction. Wearables report numbers like HRV, sleep stages, and a 0 to 100 readiness score, then leave the decision to the user. People either ignore the data or obsess over the score. There is no real difference between a 67 and a 71 if neither one tells you what to do differently today.',
+    insight:
+      'Optimizing your health is not about one big change. It mostly turns on small daily decisions: how hard to train, when to stop caffeine, when to be asleep. A product that wants to improve someone\'s health has to get those decisions right every day, using that person\'s own data, and it has to be quick enough that they keep doing it. Sleep is the one health signal that arrives while you were away, so the morning is the moment to do it.',
+    solution:
+      'IRIX uses each person\'s own data to tell them how to run their day for better health. It reads last night from Apple Health, which Apple Watch, WHOOP, Oura, and Garmin all write to. The daily touchpoint is a short morning check-in. A notification carries one state word. Opening it takes about 30 seconds: four quick questions about yesterday, a verdict screen with the night as a ribbon of sleep stages and one word (PUSH, STEADY, EASE, or RESTORE) with a sentence explaining why, then three decision cards to accept, adjust, or decline. The plan collapses into a day view, and the app goes quiet until one of the committed times, such as "Last coffee in 15 minutes."',
+    whatIBuilt: [
+      'Own product and the technical roadmap, and build the app with my co-founder',
+      'The morning loop: notification, yesterday check-in, verdict, three decisions, day view. It resumes where you left off if the app is closed and expires at noon',
+      'A menu of nine daily decisions the user picks three from: training effort, bedtime, last caffeine, wind down, last meal, nap, fuel, water, and caffeine amount',
+      'An on-device engine that computes each morning\'s plan from the user\'s own baselines. The cloud is a one-way mirror and the morning loop never depends on it',
+      'Coach, an AI chat grounded in the user\'s own data, with a written daily report and plan changes proposed as cards the user accepts or declines',
+      'Body, a 30-day view of sleep rhythm and six metrics, each shown against the user\'s own normal',
+      'Onboarding that backfills sleep history silently and opens with one real finding mined from the user\'s own nights',
+    ],
+    decisions: [
+      'A 30-second ceiling on the morning flow. A ritual only survives if it is shorter than the excuse to skip it, so every design question resolves toward protecting that limit.',
+      'No 0 to 100 score. One state word and comparisons like "38 minutes under your normal" instead. A single number invites ranking your body against itself in ways the data cannot support.',
+      'Three decisions the user chose, in a fixed order. The morning reads the same every day. The engine can add one fourth card on a day that earns it, with a line saying why and no badge.',
+      'Honest data. Measured, self-reported, and inferred values are worded differently, such as "Detected: lift, 6:04 PM" versus "Based on what you told us." Charts never draw structure the data does not contain.',
+      'Declining is allowed, and the app shows the consequence plainly instead of nagging.',
+      'Works from the first night. Baselines form from backfilled history, and a calibrating state is shown until 14 nights exist.',
+      'Compute on the device. The engine is a standalone Swift package with no UI or network dependencies, so the plan is deterministic, testable, and available offline.',
+      'No red, no icons, no emoji. Words carry the meaning, with one gold accent for the moment the plan is set.',
+      'Silence after the ritual. The app only speaks again at times the user committed to.',
+    ],
+    systemModes: [
+      {
+        name: 'Data path',
+        items: [
+          'Apple Health → night assembly with validity checks (duration, gaps, timezone, travel, daylight saving) → local store → engine → plan',
+          'The plan drives the morning screens, the notification schedule, and a home-screen widget',
+          'A one-way sync mirrors data to the cloud. It is read back only when signing in on a fresh install',
+        ],
+      },
+      {
+        name: 'Engine',
+        items: [
+          'Per-metric baselines built from each user\'s own history, so every comparison is against their normal, not a population average',
+          'Independent producers each propose a value for a decision, and a resolver arbitrates them in dependency order. Changing bedtime moves the decisions that depend on it',
+          'Every recommendation records its outcome: accepted, adjusted, declined, or missed',
+        ],
+      },
+      {
+        name: 'Coach',
+        items: [
+          'Answers questions from the user\'s own data, and replies stream as they are generated',
+          'Guardrails run both on the server and on the device, and the server\'s result is authoritative',
+          'What Coach remembers about the user is visible and removable in Profile',
+        ],
+      },
+    ],
+    results: [
+      'In TestFlight beta with a small group of friends since September 2026',
+      'Full morning loop, Coach, Body, and Profile shipped on the main branch',
+      'More than 1,100 automated tests across the app and the engine, including an end-to-end run of a synthetic user with 154 nights of history',
+      'Beta feedback is triaged into tracked issues and fed back into the design',
+    ],
+    iteration: [
+      'The app was rebuilt from scratch in August 2026. The first version was an AI booking agent with a staff console. The rebuild narrowed it to the morning ritual',
+      'Three fixed cards became three chosen from a menu of nine, plus an occasional fourth. A "today only" badge on the fourth was tried and dropped because it read like a promotion',
+      'Coach started as a separate landing screen with suggested prompts and became one scrolling feed with the daily report at the top',
+      'Beta testers found that the caffeine cutoff treated a green tea like a large coffee. Usual caffeine intake is now a setting',
+      'A tester could not tell which build they were on, so a build stamp was added to Profile',
+      'A workout-time step looped back to "Will you train?" after accepting a time, and once suggested a time that had already passed. Both were fixed',
+    ],
+    outcome:
+      'IRIX today is this app: a coach that turns wearable data into the daily decisions that improve your health. It is being tested on its own before the gym layer is built. The business model is still B2B: the app is meant to pair with a member\'s own gym, so classes and recovery sessions can be booked from the day\'s plan. That layer is not built yet.',
+    learnings: [
+      'Constraints are the product. The 30-second ceiling and the no-score rule decide more design questions than any feature list',
+      'Wording is an engineering problem. Keeping measured, reported, and inferred claims distinct had to be enforced in code and tests, not left to copy review',
+      'Narrowing the product was the hard decision. The rebuild removed more than it added, and the morning check-in became the way in to a broader health coach',
+    ],
+    status: 'In TestFlight beta. Gym pairing and booking are the next phase.',
+    nextSteps: [
+      'Build the gym connection: booking a class or recovery session at the member\'s own gym from the day\'s plan',
+      'Redesign the Body tab, which testers found cramped and passive',
+      'A clearer way to edit tomorrow\'s plan',
+    ],
+    inlineImages: [
+      { after: 'solution', src: '/images/irix-coach/morning-flow.jpg', alt: 'The morning flow in four screens: yesterday check-in, the verdict STEADY with a sleep-stage ribbon, three decision cards for training effort, bedtime, and last caffeine, and the day view with the plan' },
+      { after: 'whatIBuilt', src: '/images/irix-coach/onboarding.jpg', alt: 'Onboarding screens: the opening "Wake up knowing" screen, history backfill counting 412 nights, a finding that Friday nights ran past midnight, and the menu for choosing three daily decisions' },
+      { after: 'systemModes', src: '/images/irix-coach/tabs.jpg', alt: 'Body tab with 30-day sleep rhythm and six metric tiles, the Coach feed with today\'s report, and a Coach conversation answering "Should I still lift tonight?"' },
+    ],
+    links: [{ label: 'Website', href: 'https://tryirix.com' }],
+  },
+  {
     slug: 'irix',
-    title: 'IRIX | AI Coaching on Wearables',
+    title: 'IRIX | Smart Glasses and Gym Tracking Prototypes',
     year: '2026',
     oneLiner:
-      'Two working sensing systems for the gym floor, smart glasses that read plate loads and count reps and a camera plus wristband tracker that fuses video with motion data, and the decision to ship the coach as an app on wearables people already own.',
+      'Two working sensing systems for the gym floor: smart glasses that read plate loads and count reps, and a camera and wristband tracker that fuses video with motion data. Plus the decision that led from both to the IRIX app.',
     heroImage: '/images/projects/irix-hero.png',
     heroImagePosition: 'left',
     heroImageScale: 1.4,
     inlineImages: [
-      { after: 'solution', src: '/images/projects/irix-hud-ring.png', alt: 'Even G2 smart glasses on wooden surface' },
+      { after: 'solution', src: '/images/projects/irix-hud-ring.png', alt: 'Smart glasses, the form factor the first coaching prototype was built for' },
       { after: 'systemModes', src: '/images/irix/plate-loading.jpg', alt: 'First-person camera frame from a demo session: loading plates onto the bar, the view the vision model reads the load from' },
       { after: 'systemModes', src: '/images/irix/rep-signal.jpg', alt: 'Raw accelerometer and gyroscope traces from the glasses motion sensor during a set, with the repeating pattern of each rep visible' },
       { after: 'systemModes', src: '/images/irix/tracking-dataflow.svg', alt: 'Data flow of the camera and wristband tracking system: wristband, gateways, edge server, identity fusion, camera pipeline, rep and exercise models, app and dashboard' },
@@ -57,7 +155,7 @@ export const projects: Project[] = [
     ],
     inlineVideos: [{ after: 'problem', youtubeId: 'YdCnRnITyKg' }],
     role: 'Co-Founder',
-    context: 'Feb 2026 – Present · San Francisco, CA',
+    context: 'Feb 2026 – Jul 2026 · San Francisco, CA',
     tags: [
       'Wearable Systems',
       'Sensor Fusion',
@@ -73,7 +171,7 @@ export const projects: Project[] = [
     insight:
       'No single sensor is enough, and each one is good at a different thing. A camera is good at slow, deliberate facts like what weight is on the bar. A motion sensor is good at fast, repetitive facts like rep timing. The system should use each sensor only for the job it does well, and combine them only where the combination produces a better estimate than either one alone.',
     solution:
-      'I built this in three steps. First, a smart-glasses coaching prototype that uses the camera to verify setup and read the load, then hands off to the motion sensor to count reps. Second, a multi-camera and wristband tracking system that fuses video and motion data so tracking survives occlusion. Third, after pricing out what it takes to deploy sensing hardware in a real gym, an app-based coach that runs on Apple Watch, WHOOP, Garmin, and Oura data, which is the product IRIX ships today.',
+      'I built this in three steps. First, a smart-glasses coaching prototype that uses the camera to verify setup and read the load, then hands off to the motion sensor to count reps. Second, a multi-camera and wristband tracking system that fuses video and motion data so tracking survives occlusion. Third, after pricing out what it takes to deploy sensing hardware in a real gym, an app-based coach that runs on Apple Watch, WHOOP, Garmin, and Oura data, which is the product IRIX ships today and has its own case study.',
     whatIBuilt: [
       'Smart-glasses coaching prototype, end to end: glasses camera and motion sensor, an iOS app that orchestrates the session, a Python backend for the vision model, and spoken coaching through the glasses',
       'On-device rep counting from the glasses motion sensor, validated on squats, deadlifts, and pull-ups',
@@ -146,141 +244,7 @@ export const projects: Project[] = [
       'Measure identity accuracy, rep accuracy, latency, and member friction in that lane',
       'Bring workout sensing back into the app-based coach as wearable hardware allows',
     ],
-    links: [{ label: 'Website', href: 'https://tryirix.com' }],
-  },
-  {
-    slug: 'mri-headphones',
-    title: 'SoundImaging | MRI Pneumatic Headphones',
-    year: '2025',
-    heroImage: '/images/mri-headphones/hero.png',
-    oneLiner:
-      '~45% signal-to-noise improvement in an MRI-safe pneumatic headphone system, from a redesigned transducer housing, sealed acoustic joints, and better tubing.',
-    role: 'Product Design Engineer',
-    context: 'Jan 2025 – Jun 2025 · UCSD senior design, sponsored by SoundImaging · Team of four',
-    problem:
-      'An MRI scanner is loud enough to hurt, with noise reaching 130 dB, and nothing electronic or ferrous can go inside the bore. Headphones for MRI patients are therefore pneumatic: a speaker outside the scan room turns the signal into sound, and the sound itself travels through plastic tubing to the patient. Every part of that path loses sound. SoundImaging\'s existing system was hard to hear over the scanner, and the team was asked to make it clearer and better at blocking noise while staying fully non-ferrous, using FDA-compliant materials, fitting inside a head coil, and with no active noise cancellation.',
-    insight:
-      'With no electronics allowed near the patient, audio quality is a mechanical design problem. Clarity is decided by the transducer housing geometry, the tubing bore, and how well every joint is sealed. Each connection point is a place where sound leaks out or reflects back.',
-    solution:
-      'We redesigned the three parts of the sound path. The transducer, where a piezo speaker converts the electrical signal into sound, got a new housing with a smooth interior dome and a push-and-twist lid. The tubing was changed to 1 in. inner diameter PVC. The headphones were rebuilt with acoustic foam inside the ear cups, insulation muffs outside, and a stiffer headband for a tighter seal. Every joint between the three was sealed.',
-    whatIBuilt: [
-      'Redesigned the transducer housing in SolidWorks with a tool-free push-and-twist lid, so an MRI technician can open and service it without tools',
-      'Sealed every acoustic joint, tubing to transducer and tubing to headphones, with silicone sealant and gaskets so sound is not lost at the connections',
-      'Selected 1 in. PVC tubing after testing it against nylon, polyethylene, and polyurethane',
-      'Chose MRI-safe, FDA-compliant materials throughout, with ABS for the printed housing',
-      'Defined how audio quality would be measured. I compared frequency response, harmonic distortion, signal-to-noise ratio, and clarity ratio as candidate metrics, so every design change could be judged by a number instead of by ear',
-      'Helped build the test bed: an anechoic chamber with a speaker playing simulated MRI noise and a mannequin head with a microphone in each ear',
-    ],
-    decisions: [
-      'MRI-safe, FDA-compliant materials. The housing is ABS because ABS can be approved for medical devices, unlike PLA, and it is durable where resin prints are brittle. Nothing in the scan room is ferrous.',
-      'Push-and-twist lid on the transducer housing. Technicians install and service these systems by hand, so the lid opens and closes without tools.',
-      'Smooth interior dome. We tested smooth and stair-step dome interiors across several print materials and kept the smooth ABS dome.',
-      'Every acoustic joint sealed. Fewer connection points and airtight joints mattered as much as any single component, because each leak lowers the signal that reaches the ear.',
-      '1 in. PVC tubing over nylon. Nylon measured louder in testing, but it was too rigid to route around the scanner bed and head coil. PVC resists kinking, which matters because a kink blocks and reflects sound, and it is easy for a technician to install.',
-      'Passive noise blocking only. Active cancellation needs electronics in the bore, so isolation comes from foam, insulation, and clamping force on the ear cups.',
-      'Signal-to-noise ratio as the headline metric. It compares what the patient hears from the headphones against the scanner noise that gets through, which captures both louder audio and better isolation in one number. Frequency sweeps covered what it misses, since a sweep shows peaks and dips across the audible range.',
-    ],
-    results: [
-      '~45% improvement in signal-to-noise ratio',
-      'Clear audio against scanner noise that reaches 130 dB, the project goal of a positive signal-to-noise ratio',
-      '20 to 30 dB improvement in passive noise dampening, measured in the test chamber',
-      'A frequency sweep through both ears showed only marginal loss between left and right channels',
-      'Listen to the difference below: the original headphones, then the redesign, recorded through the mannequin head in the test chamber',
-    ],
-    iteration: [
-      'Tested transducer domes in PLA, ABS, and resin with smooth and stair-step interiors before settling on smooth ABS',
-      'Tested four tubing materials and several diameters. Larger bore was the clearest single driver of audio quality',
-      'Removed the internal "spoons" from the sponsor\'s ear cups, which were choking off the sound',
-      'Earlier headbands sealed tighter but were ferrous, so the band was redesigned in a rigid plastic',
-      'The piezo speaker degraded over the course of testing, which is a caveat when comparing early and late measurements',
-    ],
-    outcome:
-      'The sponsor received a working prototype that is louder, clearer, and easier to service than the system we started with, with CAD, test data, and a bill of materials. The redesign cost about the same in materials as the original.',
-    learnings: [
-      'In a pneumatic audio path, the biggest gains come from a larger tube and fewer, better-sealed connections',
-      'Designing for the technician who services the part, not only the patient who wears it, changed the housing design',
-      'Good test data needs a calibrated microphone and a quiet room. We built the test bed before trusting any comparison',
-    ],
-    status: 'Completed. Prototype and documentation delivered to SoundImaging in June 2025.',
-    nextSteps: [
-      'Stereo audio, by splitting the signal into two tubes',
-      'A thin non-ferrous metal coating inside the transducer dome to reduce sound loss through the plastic',
-      'Lighter tubing at the same bore',
-      'More comfort work for long scans',
-    ],
-    inlineImages: [
-      { after: 'solution', src: '/images/mri-headphones/system-diagram.jpg', alt: 'Diagram of the redesigned system: phone and amplifier outside the MRI room, transducer and pneumatic tubing inside, headphones on the patient' },
-      { after: 'whatIBuilt', src: '/images/mri-headphones/transducer-housing.png', alt: 'CAD of the transducer housing with the push-and-twist lid seat' },
-      { after: 'whatIBuilt', src: '/images/mri-headphones/transducer-section.jpg', alt: 'Section view of the transducer housing CAD showing the smooth interior dome and the push-and-twist lid' },
-      { after: 'whatIBuilt', src: '/images/mri-headphones/transducer-and-tubing.jpg', alt: 'Printed transducer housing connected to a coil of 1 in. clear PVC tubing' },
-      { after: 'decisions', src: '/images/mri-headphones/tubing-sizes.jpg', alt: 'Tubing candidates of different diameters and materials held side by side' },
-      { after: 'decisions', src: '/images/mri-headphones/connector-disc.png', alt: 'CAD of the connector disc that joins the two tubes to the transducer housing' },
-      { after: 'results', src: '/images/mri-headphones/test-rig.jpg', alt: 'Test rig: mannequin head wearing the headphone prototype inside the anechoic box, with a microphone in each ear' },
-      { after: 'results', src: '/images/mri-headphones/frequency-sweep.jpg', alt: 'Frequency sweep recorded at both ears of the mannequin head, showing similar output on left and right channels' },
-      { after: 'iteration', src: '/images/mri-headphones/dome-prototypes.jpg', alt: 'Printed transducer dome prototypes in different materials and geometries laid out on a table' },
-      { after: 'iteration', src: '/images/mri-headphones/transducer-printed.jpg', alt: 'A printed transducer housing with tubing attached, on the test chamber' },
-      { after: 'iteration', src: '/images/mri-headphones/headband-iterations.jpg', alt: 'Four headband iterations, from early prints to the final rigid plastic band' },
-    ],
-    inlineLocalVideos: [
-      { after: 'results', src: '/files/mri-headphones-before.mp4', caption: 'Before: original headphones (sound on)' },
-      { after: 'results', src: '/files/mri-headphones-after.mp4', caption: 'After: redesigned system (sound on)' },
-    ],
-    tags: ['Medical Devices', 'Acoustics', 'Mechanical Design', 'SolidWorks', 'MRI-Safe', 'Materials Selection'],
-  },
-  {
-    slug: 'apollo-x-etower',
-    title: 'Eversun Energy | Apollo X eTower',
-    year: '2024',
-    heroImage: '/images/apollo-x-etower/hero.png',
-    oneLiner:
-      'Solar lighting tower taken from concept to a demo-ready alpha in 3 months. The leg-deployment cables were fraying after about 25 cycles. I traced it to rotational wear and fixed it at the root.',
-    role: 'Mechanical Engineering Intern',
-    context: 'Jul 2024 – Sep 2024 · Eversun Energy · San Diego, CA',
-    problem:
-      'The legs of the Apollo X deploy on gas struts, and the struts release when internal metal cables are pulled. I noticed the cables fraying after only about 25 deployment cycles. That is far too few for this product: the customers are construction crews and search and rescue teams, who set a tower up and tear it down constantly and need components that last. Deployment is also the first thing a customer or investor sees, and a tower whose legs stop releasing is useless in the field. The lever handle was also small, which made it hard to grip when folding the legs back up. The fix had to fit inside the existing main body frame, pull the cables reliably, be easy to use, hold up outdoors, and lock for security.',
-    insight:
-      'The fraying was not a cable strength problem. The old lever turned a pulley, and that pulley dragged the cable through a rotation every time the legs deployed. The repeated rotational wear is what broke the strands. A tougher cable would only have delayed the failure. Changing the motion from rotary to linear removes the cause.',
-    solution:
-      'I started from an off-the-shelf industrial lever whose 90° handle rotation drives an internal rod straight up and down, and redesigned it to work in the tower. The locking handle had to fit a 25 mm cavity in the main body, and no part on the market did, so I modified the design until it fit without weakening the structure around it. The actuation cable attaches to the rod with a set screw, on a mount I made to route it into the tower body, so the cable is only ever pulled in a straight line. The larger handle also gave users a proper grip, which solved the ergonomics problem with the same part. The Apollo X itself is a portable solar lighting tower: a telescoping carbon fiber mast that extends from 5 ft to 23 ft, a main body with the control panel and two swappable battery packs, and four legs that extend past 90° and carry foldable solar panels.',
-    whatIBuilt: [
-      'Led design and fabrication of the Apollo X alpha, from concept to demo-ready hardware in 3 months',
-      'Root-caused the cable fraying to rotational wear in the pulley-routed lever and replaced it with a linear-pull locking handle, built by modifying an off-the-shelf lever',
-      'Made the design changes that got the handle into the tower: it had to fit a 25 mm cavity in the main body, lock for security, and leave the surrounding structure intact, and nothing available off the shelf did all three',
-      'Designed the mount and set-screw cable attachment that connect the handle to the strut cables',
-      'Specified the gas struts and their lengths, and selected the leg materials, based on the loads and outdoor conditions the tower had to handle',
-      'Design for assembly: wrote the step-by-step assembly sequence for the alpha unit before handoff',
-    ],
-    decisions: [
-      'Fix the motion, not the cable. Linear pull removes the rotational wear that caused the fraying, so the failure cannot come back with a different cable.',
-      'Modify a proven mechanism instead of designing from scratch. An existing industrial lever already converted handle rotation to linear travel and came with a large handle. Starting from it was faster and more durable than a fully custom mechanism, and the engineering work went into the changes needed to fit the 25 mm cavity, attach the cable, and lock.',
-      'Larger handle. Users hold the lever while lifting the legs to fold the tower, so grip size directly affects whether one person can pack it up.',
-      'Requirements first. I wrote the functional requirements (fit the frame, pull the cables reliably, intuitive, durable, lockable) before brainstorming, then compared modifying an existing lever against a fully custom one.',
-    ],
-    results: [
-      'Cable fraying eliminated. The old lever frayed its cables within about 25 cycles, and the new one pulled them reliably through testing and live demos',
-      'Legs extended smoothly and consistently on rough and uneven ground',
-      'Smooth deployment became a key selling point in investor demos',
-      'Demo-ready alpha unit completed in 3 months',
-    ],
-    outcome:
-      'The alpha unit deployed reliably in front of investors, and the lever redesign was the visible difference. The finished tower stows at 5 x 2 x 1 ft, weighs 85 lb (120 lb with its case), and deploys in under 60 seconds.',
-    learnings: [
-      'Find the mechanism behind a failure before choosing a fix. The obvious fix here, a stronger cable, would have shipped the same problem',
-      'Starting from a proven mechanism and modifying it well is often the better engineering decision',
-      'Reliability and ergonomics can come from the same part when the requirements are written down first',
-    ],
-    status: 'Completed internship (Sep 2024).',
-    inlineImages: [
-      { after: 'problem', src: '/images/apollo-x-etower/lever-before-pulley.jpg', alt: 'Before: the original lever with its pulley and the cable routed around it' },
-      { after: 'insight', src: '/images/apollo-x-etower/lever-off-the-shelf.jpg', alt: 'The lever the redesign started from, held in hand, with the rod that moves vertically when the handle turns' },
-      { after: 'solution', src: '/images/apollo-x-etower/actuation-mechanism.png', alt: 'After: the redesigned lever mechanism with the actuation cable attached to the rod by a set screw' },
-      { after: 'solution', src: '/images/apollo-x-etower/dimensions.png', alt: 'Apollo X eTower stowed and deployed dimensions, carrying case' },
-      { after: 'whatIBuilt', src: '/images/apollo-x-etower/lever-installed.jpg', alt: 'The new lever installed on the tower body with the gas struts and cables below it' },
-      { after: 'whatIBuilt', src: '/images/apollo-x-etower/specifications.png', alt: 'Eversun eTower specifications: output, mast, energy, power, connectivity, case' },
-      { after: 'decisions', src: '/images/apollo-x-etower/brainstorm-sketches.jpg', alt: 'Sticky-note sketches from the lever redesign brainstorm' },
-      { after: 'results', src: '/images/apollo-x-etower/leg-struts.jpg', alt: 'A leg deployed on its gas struts during testing in the warehouse' },
-    ],
-    tags: ['Mechanical Design', 'Mechanism Design', 'Prototyping', 'Ergonomics', 'Design for Assembly', 'Fabrication'],
+    links: [{ label: 'See the IRIX app', href: '/work/irix-coach' }],
   },
   {
     slug: 'bci-finger-decoding',
@@ -343,8 +307,95 @@ export const projects: Project[] = [
     tags: ['Signal Processing', 'Deep Learning', 'Neural Interfaces', 'ECoG', 'Python', 'TensorFlow'],
   },
   {
+    slug: 'robot-sim-test-harness',
+    title: 'Robot Arm Kinematics and Simulation Testing | Franka Panda',
+    nameFirst: true,
+    year: '2026',
+    heroImage: '/images/robot-sim-test-harness/hero.jpg',
+    oneLiner:
+      'Kinematics for a 7-joint Franka Panda arm, tracking a figure-eight on the real robot to about 1 cm, followed by an automated test harness that checks a two-arm robot simulation before other teams build on it.',
+    role: 'Kinematics labs (pairs) and Simulation Quality Control (team of four)',
+    context: 'Jan 2026 – May 2026 · Penn MEAM 5200, Introduction to Robotics',
+    tags: ['Robotics', 'Kinematics', 'Franka Panda', 'ROS', 'Gazebo', 'Test Automation', 'Python'],
+    problem:
+      'The course had two halves. The first was making a 7-joint arm go where you tell it: computing where the hand is from the joint angles, and the much harder reverse, finding joint angles that put the hand at a target pose, on a real Franka Panda. The second was the final project, one shared system: a robot cell with two Franka arms, a turntable between them, six dispensers with spring-return levers, and a cup, built in simulation by one team while other teams wrote the scheduling and robot control on top of it. If the simulator misbehaves, every team downstream debugs the wrong thing. Our team was responsible for proving the simulator behaves the way it claims to, under normal use, at the edges, and when things go wrong. The hard part is that a physics simulator is not perfectly repeatable, so a test that is too strict fails for no reason and a test that is too loose catches nothing.',
+    insight:
+      'Test the simulator the way a downstream team will use it, but without depending on any of their code. If the tests set the state of the world directly and read it back through the same standard interfaces everyone else uses, they can run before the control code exists and they keep working when it changes.',
+    solution:
+      'For the arm, we wrote forward kinematics from a Denavit–Hartenberg table, the Jacobian, a velocity solver for following a moving target, and a numerical inverse kinematics solver, then ran them in simulation and on the physical robot. For the final project, we built a base test harness that wraps the ROS and Gazebo service calls, provides assertion helpers with tolerances, and logs every result to JSON. Seven test suites sit on top of it: one for each part of the scene (scene spawning, the cup, the dispenser levers, the turntable, the two arms), one for integration scenarios that use several parts at once, and one for stress. A single runner executes everything and writes a combined pass/fail report.',
+    whatIBuilt: [
+      'Forward kinematics for the Panda with a lab partner: a Denavit–Hartenberg table for all seven joints, the chain of transforms to the end effector, and the position of every joint, checked by hand one joint at a time and then against the simulator and the physical arm',
+      'Velocity kinematics with a lab partner: the Jacobian and a least-squares solver that turns a desired hand velocity into joint velocities, and ignores any direction left unconstrained',
+      'Numerical inverse kinematics with a lab partner: an iterative solver that steps toward the target pose with the Jacobian pseudo-inverse while a secondary task keeps joints near the middle of their range, projected into the null space so it cannot disturb the main task',
+      'Worked in a team of four on the test plan and the harness. The team defined each test case up front with its initial conditions, input sequence, expected output, and tolerance, so other teams could use the scenarios early',
+      'Base harness: service connections, assertions for position, joint angle, model existence, and whether the cup is upright, and a result log with the measured error for every check',
+      'Component suites: all eight scene objects spawn where the configuration says, the cup obeys friction and stays upright, each dispenser lever deflects and springs back within its joint limits, the turntable starts, stops, reverses, and scales speed, and both arms are present with readable joints',
+      'Integration suite: the cup stays on the turntable while it spins, settles when it stops, a dispenser can be pressed during a spin, and both arms stay intact through a full stop, spin, stop cycle',
+      'Stress suite: rapid turntable speed changes, ten rapid cup moves, all six dispensers pressed at once, a fast 5 rad/s spin, direction reversal, and 100 rapid state queries with under 5% allowed to fail',
+    ],
+    decisions: [
+      'Define the target orientation relative to where the arm starts. Tracking was poor at first because the target used a fixed rotation that did not match the arm\'s starting pose, so the controller spent the whole run fighting an error that should not have existed. Computing the target from the starting pose removed it.',
+      'Raise the gains, then relax the joint velocity limits. Position and orientation gains went from 10 to 50, and the velocity limit from 0.25 to 0.5 rad/s, because the joints were saturating before the controller could catch up.',
+      'Keep joints centered in the null space. A 7-joint arm has a spare degree of freedom, and using it to stay away from joint limits makes solutions safer to run on hardware.',
+      'No dependency on the robot control code. Tests place objects with a set-state call and verify with a get-state call, so they run on the simulator alone.',
+      'Tolerances for continuous values, exact matches for discrete ones. Positions and angles pass within an error band, 5 cm for positions by default. States like "model exists" must match exactly.',
+      'Different tolerances for different physics. Two dispensers have an active spring controller and four rely on the simulator\'s passive spring, so the passive ones get a looser return tolerance and a longer settling time.',
+      'Measure motion over a time window for the turntable. Its controller takes a speed, not an angle, so a test cannot wait for a target position and instead checks how far the joint moved in a fixed time.',
+      'Check every constant against the source. Expected positions, joint names, and limits were read from the simulation team\'s own model and launch files, not from their change notes.',
+    ],
+    results: [
+      'Figure-eight tracking on the physical arm with position and orientation controlled: 1.08 cm mean position error, 1.78 cm maximum, about 3.9° mean orientation error',
+      'The same trajectory in simulation: 0.8 mm mean position error and 0.09° mean orientation error',
+      'Forward kinematics matched tape-measure checks on the physical arm to within about 17% on the worst axis',
+      'Inverse kinematics found valid solutions for 4 of 6 simulated target poses. The two failures were poses near the edge of the workspace, and changing the starting guess did not help',
+      'Seven test suites and a single runner for the final project, tested against the simulation team\'s latest environment',
+      'Early validation of the core setup passed: both arms publish state, initialize independently, and commanding one does not move the other',
+      'Both arms reached their neutral pose with steady-state error on the order of 0.00001 rad, and repeated trials gave nearly identical results',
+      'Joint limit violations were clipped and the table-proximity safety check aborted unsafe motions, as intended',
+    ],
+    iteration: [
+      'The two inverse kinematics failures were the useful result. Both targets asked the arm to reach far out with the wrist bent sharply back, which needs joint angles near their limits. The joint-centering task pushes away from exactly those angles, so the solver stalled instead of producing a contorted pose',
+      'Started the final project by checking that the simulation ran at all: connectivity, frames, controllers. Then moved to a consistent framework that tests each part and how the parts behave together',
+      'Picking tolerances and timing was the main difficulty, because the simulator is not perfectly consistent from run to run',
+      'Some planned tests, such as scheduler-side scripts, depended on other teams having their interfaces ready',
+    ],
+    learnings: [
+      'Get the reference frames right before touching gains. The biggest tracking improvement came from fixing how the target was defined',
+      'Simulation flatters a controller. The same code that tracked to under a millimeter in simulation tracked to about a centimeter on hardware',
+      'A test is only as good as its tolerance. Too tight and it cries wolf, too loose and it is decoration',
+      'Decoupling the tests from the code under development let testing start weeks before integration',
+      'On a multi-team project, a shared, written definition of "expected behavior" is as valuable as the tests themselves',
+    ],
+    status: 'Completed (May 2026).',
+    inlineImages: [
+      { after: 'solution', src: '/images/robot-sim-test-harness/ik-solvers-diagram.jpg', alt: 'Diagram of the two solvers: the velocity solver computes the Jacobian, masks unconstrained directions, and solves least squares. The position solver iterates a primary task, a joint-centering task, and a null-space combination until it converges' },
+      { after: 'whatIBuilt', src: '/images/robot-sim-test-harness/fk-validation.jpg', alt: 'Forward kinematics check for three arm configurations: the computed joint positions plotted in 3D above the same pose in the simulator' },
+      { after: 'results', src: '/images/robot-sim-test-harness/tracking-sim.jpg', alt: 'The simulated Panda arm tracing a figure-eight (left) and a straight line (right) with its end effector' },
+      { after: 'systemModes', src: '/images/robot-sim-test-harness/harness-structure.svg', alt: 'Structure of the test harness: seven test suites on a shared base harness, run against the simulated cell with two arms, a turntable, six dispensers, and a cup' },
+    ],
+    inlineVideos: [{ after: 'results', youtubeId: 'vjuTs2oQL8s' }],
+    systemModes: [
+      {
+        name: 'Velocity solver',
+        items: ['Jacobian → drop unconstrained directions → least-squares solve for joint velocities'],
+      },
+      {
+        name: 'Position solver',
+        items: [
+          'Pose error as a displacement and a rotation → pseudo-inverse step toward the target → add joint centering through the null space → repeat',
+          'Stops when position is within 0.1 mm and orientation within 0.001 rad, or after 1000 iterations',
+        ],
+      },
+      {
+        name: 'Test harness',
+        items: ['Seven suites call a shared base harness, which talks to the simulator, applies tolerances, and logs every result'],
+      },
+    ],
+  },
+  {
     slug: 'steerable-needle',
     title: 'Steerable Needle Position Estimation | Multi-View Computer Vision',
+    nameFirst: true,
     year: '2025',
     oneLiner:
       'Tracked the 3D tip of a steerable needle through reflective gel with two cameras, to ~7% relative error (2.5 mm) against a physics-based deformation model, in a setting where stereo depth failed.',
@@ -446,15 +497,188 @@ export const projects: Project[] = [
       'Improve robustness to glare with better prompting, glare masking, and skeleton cleanup',
     ],
     inlineImages: [
-      { after: 'solution', src: '/images/projects/steerable-needle/pipeline.png', alt: 'Pipeline overview (presentation p.3)' },
-      { after: 'systemModes', src: '/images/projects/steerable-needle/skeleton-glare.png', alt: 'Skeletonization results + glare artifact (report p.6)' },
-      { after: 'results', src: '/images/projects/steerable-needle/validation.png', alt: 'Model vs measured curve, 7% error (report p.13)' },
+      { after: 'solution', src: '/images/projects/steerable-needle/pipeline.png', alt: 'The pipeline: recorded video, segmentation, skeletonization, endpoint detection, 3D matching, and filtering' },
+      { after: 'systemModes', src: '/images/projects/steerable-needle/skeleton-glare.png', alt: 'Skeletonization results, with the glare artifact in the side view that bends the skeleton' },
+      { after: 'results', src: '/images/projects/steerable-needle/validation.png', alt: 'Measured bending curve against the deformation model\'s prediction, about 7% error' },
     ],
     inlineLocalVideos: [{ after: 'insight', src: '/files/steerable-needle-split-screen.mp4' }],
   },
   {
+    slug: 'ambient-ai-clinical-documentation',
+    title: 'Ambient AI Clinical Documentation',
+    year: '2025',
+    heroImage: '/images/ambient-ai-clinical-documentation/hero.png',
+    oneLiner:
+      'Evaluated an AI scribe pilot at the Children\'s Hospital of Philadelphia and found automation bias to be the top risk. The deliverable was a gated, human-in-the-loop workflow and an implementation checklist.',
+    role: 'Human-Systems Evaluation',
+    context: 'Aug 2025 – Dec 2025 · University of Pennsylvania · Team of six',
+    problem:
+      'Clinicians spend a large share of each visit typing notes, which costs face time with patients and contributes to burnout. An ambient AI scribe listens to the visit and drafts the note. The Children\'s Hospital of Philadelphia was piloting one, and the question was whether and how it should be deployed more widely: does it reduce workload, and what new risks does it introduce?',
+    insight:
+      'The top risk is automation bias: a clinician signing an AI-drafted note without reading it properly. Both interviewees raised it independently, one from outside the pilot and one running it. That makes deployment design, more than model quality, the thing that decides whether the tool is safe.',
+    solution:
+      'We evaluated the pilot through two stakeholder interviews and a patient survey, then turned the findings into a gated workflow. The clinician verifies consent, starts the recording, sees a visible indicator, runs the visit, stops the recording, then reviews and edits the AI draft. A mandatory review step sits between the draft and the legal medical record, so no note is filed without a human reading it.',
+    whatIBuilt: [
+      'Interviews with a human systems engineer at the hospital who was not involved in the pilot, and with the executive overseeing it',
+      'A patient survey on comfort with recording, trust in AI, and preferences for rollout',
+      'The gated human-in-the-loop workflow',
+      'An implementation checklist in seven parts: room and hardware setup, patient consent, clinician workflow, data privacy and governance, training, feedback loops, and rollout strategy',
+    ],
+    results: [
+      'Automation bias identified as the top risk by both interviewees',
+      'Patients were most concerned about privacy. They wanted a visible recording indicator, explicit opt-in, and the ability to pause or stop at any time, and most said they would still opt in',
+      'Checklist safeguards against over-reliance: mandatory review before a note is filed, audits of signed notes, and rotating manual and AI-assisted documentation days so clinicians keep the skill',
+    ],
+    learnings: [
+      'An AI tool that observes people in a sensitive setting needs visible status, explicit consent, and a human gate before its output counts',
+      'People close to a pilot and people outside it weigh the same risks differently. Interview both',
+    ],
+    status: 'Completed (Dec 2025).',
+    inlineImages: [
+      { after: 'solution', src: '/images/ambient-ai-clinical-documentation/ambient-system-diagram.png', alt: 'Ambient system diagram: stakeholders, effects, implementation, and risks' },
+      { after: 'whatIBuilt', src: '/images/ambient-ai-clinical-documentation/doug-hock-interview.png', alt: 'Interview plan for the executive who oversees the pilot' },
+      { after: 'whatIBuilt', src: '/images/ambient-ai-clinical-documentation/patient-questionnaire.png', alt: 'Patient questionnaire: perceptions of an Ambient AI clinical documentation system' },
+    ],
+    tags: ['Human Factors', 'AI Safety', 'Healthcare', 'Workflow Design'],
+  },
+  {
+    slug: 'prepcaddy',
+    title: 'PrepCaddy',
+    year: '2025',
+    heroImage: '/images/prepcaddy/hero.png',
+    oneLiner:
+      'A cutting board with measured containers built in underneath, so ingredients go straight from the knife into a portioned box. Prototyped and tested with real users.',
+    role: 'Product Design Engineer',
+    context: 'Aug 2025 – Dec 2025 · Penn human-centered product design course',
+    problem:
+      'Meal prep makes a mess in predictable ways. Loose ingredients pile up around the board, everything gets moved twice (board to bowl, bowl to plate), and portions are guessed. A normal cutting board is designed for cutting only, not for the whole prep workflow around it.',
+    insight:
+      'People care about the workflow more than the finish. Even with a rough prototype, testers immediately understood and liked cutting straight into a measured container. What they did not forgive was anything that felt loose. Modularity only works if it feels mechanically solid.',
+    solution:
+      'PrepCaddy puts detachable, standard-size containers directly beneath the cutting surface. You cut ingredients into a measured box, move the whole portion in one motion, and stage ingredients without covering the counter. The cutting surface can also expand for larger prep. The goal was to remove steps, so the work went into prototyping and user testing, not appearance.',
+    whatIBuilt: [
+      'A proof-of-concept physical prototype in low-fidelity materials, built rough on purpose so it could change quickly',
+      'Tests of box placement and sizing, how transfer feels in the hand, and whether people could work out the features without being told',
+      'User testing with a simple prep task, cutting and transferring apples, and a set of design changes drawn from what testers said and did',
+    ],
+    decisions: [
+      'Test the interaction before the finish. A rough prototype that people can actually cook with teaches more than a polished one they can only look at.',
+      'Standard container volumes, so the board doubles as a way to portion.',
+      'Keep it simple enough to understand without instructions.',
+    ],
+    results: [
+      'Testers understood what the boxes were for without explanation',
+      'Less mess than a traditional board, and moving a full box felt controlled',
+      'The standard volumes helped with portioning',
+      'Pain points: the boxes did not snap securely into place, the expanded cutting surface did not feel sturdy, the seams looked hard to clean, and there was no obvious place to put the knife down',
+    ],
+    iteration: [
+      'Replace the friction-fit boxes with a snap-in or magnetic attachment',
+      'Reinforce the expansion mechanism, or remove it if it cannot be made stable',
+      'Add knife storage outside the cutting zone',
+      'Simplify the seams so they are easier to clean',
+    ],
+    learnings: [
+      'Function wins over form early on. Testers valued what the board did even when it looked rough',
+      'Modularity has to feel solid or people stop trusting it',
+      'Small details, like where the knife goes, decide whether a physical workflow feels right',
+    ],
+    status: 'Completed (Dec 2025).',
+    nextSteps: [
+      'Design a proper mechanical attachment for the boxes',
+      'Build a mid-fidelity prototype in food-safe materials',
+      'Test with longer prep sessions and several ingredients',
+      'Evaluate cleaning, storage, and durability over time',
+    ],
+    inlineImages: [
+      { after: 'solution', src: '/images/prepcaddy/poster.png', alt: 'PrepCaddy poster showing the detachable transfer cups, the removable cutting lid, and easy cleaning' },
+    ],
+    tags: ['User Research', 'Rapid Prototyping', 'Product Design', 'Human-Centered Design'],
+  },
+  {
+    slug: 'mri-headphones',
+    title: 'SoundImaging | MRI Pneumatic Headphones',
+    year: '2025',
+    heroImage: '/images/mri-headphones/hero.png',
+    heroImagePosition: 'top',
+    oneLiner:
+      '~45% signal-to-noise improvement in an MRI-safe pneumatic headphone system, from a redesigned transducer housing, sealed acoustic joints, and better tubing.',
+    role: 'Product Design Engineer',
+    context: 'Jan 2025 – Jun 2025 · UCSD senior design, sponsored by SoundImaging · Team of four',
+    problem:
+      'An MRI scanner is loud enough to hurt, with noise reaching 130 dB, and nothing electronic or ferrous can go inside the bore. Headphones for MRI patients are therefore pneumatic: a speaker outside the scan room turns the signal into sound, and the sound itself travels through plastic tubing to the patient. Every part of that path loses sound. SoundImaging\'s existing system was hard to hear over the scanner, and the team was asked to make it clearer and better at blocking noise while staying fully non-ferrous, using FDA-compliant materials, fitting inside a head coil, and with no active noise cancellation.',
+    insight:
+      'With no electronics allowed near the patient, audio quality is a mechanical design problem. Clarity is decided by the transducer housing geometry, the tubing bore, and how well every joint is sealed. Each connection point is a place where sound leaks out or reflects back.',
+    solution:
+      'We redesigned the three parts of the sound path. The transducer, where a piezo speaker converts the electrical signal into sound, got a new housing with a smooth interior dome and a push-and-twist lid. The tubing was changed to 1 in. inner diameter PVC. The headphones were rebuilt with acoustic foam inside the ear cups, insulation muffs outside, and a stiffer headband for a tighter seal. Every joint between the three was sealed.',
+    whatIBuilt: [
+      'Redesigned the transducer housing in SolidWorks with a tool-free push-and-twist lid, so an MRI technician can open and service it without tools',
+      'Sealed every acoustic joint, tubing to transducer and tubing to headphones, with silicone sealant and gaskets so sound is not lost at the connections',
+      'Selected 1 in. PVC tubing after testing it against nylon, polyethylene, and polyurethane',
+      'Chose MRI-safe, FDA-compliant materials throughout, with ABS for the printed housing',
+      'Defined how audio quality would be measured. I compared frequency response, harmonic distortion, signal-to-noise ratio, and clarity ratio as candidate metrics, so every design change could be judged by a number instead of by ear',
+      'Helped build the test bed: an anechoic chamber with a speaker playing simulated MRI noise and a mannequin head with a microphone in each ear',
+    ],
+    decisions: [
+      'MRI-safe, FDA-compliant materials. The housing is ABS because ABS can be approved for medical devices, unlike PLA, and it is durable where resin prints are brittle. Nothing in the scan room is ferrous.',
+      'Push-and-twist lid on the transducer housing. Technicians install and service these systems by hand, so the lid opens and closes without tools.',
+      'Smooth interior dome. We tested smooth and stair-step dome interiors across several print materials and kept the smooth ABS dome.',
+      'Every acoustic joint sealed. Fewer connection points and airtight joints mattered as much as any single component, because each leak lowers the signal that reaches the ear.',
+      '1 in. PVC tubing over nylon. Nylon measured louder in testing, but it was too rigid to route around the scanner bed and head coil. PVC resists kinking, which matters because a kink blocks and reflects sound, and it is easy for a technician to install.',
+      'Passive noise blocking only. Active cancellation needs electronics in the bore, so isolation comes from foam, insulation, and clamping force on the ear cups.',
+      'Signal-to-noise ratio as the headline metric. It compares what the patient hears from the headphones against the scanner noise that gets through, which captures both louder audio and better isolation in one number. Frequency sweeps covered what it misses, since a sweep shows peaks and dips across the audible range.',
+    ],
+    results: [
+      '~45% improvement in signal-to-noise ratio',
+      'Clear audio against scanner noise that reaches 130 dB, the project goal of a positive signal-to-noise ratio',
+      '20 to 30 dB improvement in passive noise dampening, measured in the test chamber',
+      'A frequency sweep through both ears showed only marginal loss between left and right channels',
+      'Listen to the difference below: the original headphones, then the redesign, recorded through the mannequin head in the test chamber',
+    ],
+    iteration: [
+      'Tested transducer domes in PLA, ABS, and resin with smooth and stair-step interiors before settling on smooth ABS',
+      'Tested four tubing materials and several diameters. Larger bore was the clearest single driver of audio quality',
+      'Removed the internal "spoons" from the sponsor\'s ear cups, which were choking off the sound',
+      'Earlier headbands sealed tighter but were ferrous, so the band was redesigned in a rigid plastic',
+      'The piezo speaker degraded over the course of testing, which is a caveat when comparing early and late measurements',
+    ],
+    outcome:
+      'The sponsor received a working prototype that is louder, clearer, and easier to service than the system we started with, with CAD, test data, and a bill of materials. The redesign cost about the same in materials as the original.',
+    learnings: [
+      'In a pneumatic audio path, the biggest gains come from a larger tube and fewer, better-sealed connections',
+      'Designing for the technician who services the part, not only the patient who wears it, changed the housing design',
+      'Good test data needs a calibrated microphone and a quiet room. We built the test bed before trusting any comparison',
+    ],
+    status: 'Completed. Prototype and documentation delivered to SoundImaging in June 2025.',
+    nextSteps: [
+      'Stereo audio, by splitting the signal into two tubes',
+      'A thin non-ferrous metal coating inside the transducer dome to reduce sound loss through the plastic',
+      'Lighter tubing at the same bore',
+      'More comfort work for long scans',
+    ],
+    inlineImages: [
+      { after: 'solution', src: '/images/mri-headphones/system-diagram.jpg', alt: 'Diagram of the redesigned system: phone and amplifier outside the MRI room, transducer and pneumatic tubing inside, headphones on the patient' },
+      { after: 'whatIBuilt', src: '/images/mri-headphones/transducer-housing.png', alt: 'CAD of the transducer housing with the push-and-twist lid seat' },
+      { after: 'whatIBuilt', src: '/images/mri-headphones/transducer-section.jpg', alt: 'Section view of the transducer housing CAD showing the smooth interior dome and the push-and-twist lid' },
+      { after: 'whatIBuilt', src: '/images/mri-headphones/transducer-and-tubing.jpg', alt: 'Printed transducer housing connected to a coil of 1 in. clear PVC tubing' },
+      { after: 'decisions', src: '/images/mri-headphones/tubing-sizes.jpg', alt: 'Tubing candidates of different diameters and materials held side by side' },
+      { after: 'decisions', src: '/images/mri-headphones/connector-disc.png', alt: 'CAD of the connector disc that joins the two tubes to the transducer housing' },
+      { after: 'results', src: '/images/mri-headphones/test-rig.jpg', alt: 'Test rig: mannequin head wearing the headphone prototype inside the anechoic box, with a microphone in each ear' },
+      { after: 'results', src: '/images/mri-headphones/frequency-sweep.jpg', alt: 'Frequency sweep recorded at both ears of the mannequin head, showing similar output on left and right channels' },
+      { after: 'iteration', src: '/images/mri-headphones/dome-prototypes.jpg', alt: 'Printed transducer dome prototypes in different materials and geometries laid out on a table' },
+      { after: 'iteration', src: '/images/mri-headphones/transducer-printed.jpg', alt: 'A printed transducer housing with tubing attached, on the test chamber' },
+      { after: 'iteration', src: '/images/mri-headphones/headband-iterations.jpg', alt: 'Four headband iterations, from early prints to the final rigid plastic band' },
+    ],
+    inlineLocalVideos: [
+      { after: 'results', src: '/files/mri-headphones-before.mp4', caption: 'Before: original headphones (sound on)' },
+      { after: 'results', src: '/files/mri-headphones-after.mp4', caption: 'After: redesigned system (sound on)' },
+    ],
+    tags: ['Medical Devices', 'Acoustics', 'Mechanical Design', 'SolidWorks', 'MRI-Safe', 'Materials Selection'],
+  },
+  {
     slug: 'autonomous-turret',
     title: 'Autonomous Projectile-Launching Vehicle | Mobile Robotics',
+    nameFirst: true,
     year: '2025',
     heroImage: '/images/autonomous-turret/hero.png',
     oneLiner:
@@ -545,93 +769,141 @@ export const projects: Project[] = [
     tags: ['Mechanical Design', 'CAD', 'ROS', 'Computer Vision', 'Servo Actuation', 'Rapid Prototyping'],
   },
   {
-    slug: 'ambient-ai-clinical-documentation',
-    title: 'Ambient AI Clinical Documentation',
+    slug: 'autonomous-car',
+    title: 'Autonomous RC Car | Lane Following, GPS, and Vision',
+    nameFirst: true,
     year: '2025',
-    heroImage: '/images/ambient-ai-clinical-documentation/hero.png',
+    heroImage: '/images/autonomous-car/hero.jpg',
     oneLiner:
-      'Evaluated an AI scribe pilot at the Children\'s Hospital of Philadelphia and found automation bias to be the top risk. The deliverable was a gated, human-in-the-loop workflow and an implementation checklist.',
-    role: 'Human-Systems Evaluation',
-    context: 'Aug 2025 – Dec 2025 · University of Pennsylvania · Team of six',
+      'Built a small autonomous car from a kit and got it driving laps on its own: a neural network trained to drive in simulation, camera lane following with a tuned PID steering controller, GPS laps, and a face recognition model we trained ourselves.',
+    role: 'Mechanical Lead',
+    context: 'Mar 2025 – May 2025 · UCSD ECE/MAE 148 · Team of four',
+    tags: ['Autonomous Vehicles', 'ROS 2', 'PID Control', 'Computer Vision', 'Model Training', 'CAD', '3D Printing'],
     problem:
-      'Clinicians spend a large share of each visit typing notes, which costs face time with patients and contributes to burnout. An ambient AI scribe listens to the visit and drafts the note. The Children\'s Hospital of Philadelphia was piloting one, and the question was whether and how it should be deployed more widely: does it reduce workload, and what new risks does it introduce?',
+      'The class hands each team a bare RC chassis, a single-board computer, a depth camera, and a GPS unit, and ten weeks to make it drive itself. Before the final project, the car has to earn its autonomy step by step: it has to be built, wired, and mounted so the sensors hold still, then follow a lane with a camera, then lap a course on GPS. The hardest part is the lane follower. A camera on a small, fast car sees glare, shadows, and two kinds of line, and a steering controller that is tuned too hot oscillates across the lane while one tuned too soft runs wide on the curves.',
     insight:
-      'The top risk is automation bias: a clinician signing an AI-drafted note without really reading it. Both interviewees raised it independently, one from outside the pilot and one running it. That makes deployment design, more than model quality, the thing that decides whether the tool is safe.',
+      'Most of what looks like a control problem is a calibration problem. If the color filter picks out the lines cleanly and the steering limits match what the servo can actually do, a simple PID controller is enough. If they do not, no amount of gain tuning fixes it.',
     solution:
-      'We evaluated the pilot through two stakeholder interviews and a patient survey, then turned the findings into a gated workflow. The clinician verifies consent, starts the recording, sees a visible indicator, runs the visit, stops the recording, then reviews and edits the AI draft. A mandatory review step sits between the draft and the legal medical record, so no note is filed without a human reading it.',
+      'We built the car, then brought up each capability in turn. First, each of us trained a neural network to drive: you drive laps by hand in a simulator, the network learns to map camera images to steering and throttle, and then it has to complete three laps on its own. For lane following on the real car, the camera image is filtered by color to isolate the lane lines, the offset of the line from the image center becomes the error, and a PID controller turns that error into a steering command with separate throttle values for straights and turns. The same car then ran three GPS laps for the midterm and hosted the vision work that fed the final project: a face recognition model trained on our own team, and hand-gesture recognition on the depth camera.',
     whatIBuilt: [
-      'Interviews with a human systems engineer at the hospital who was not involved in the pilot, and with the executive overseeing it',
-      'A patient survey on comfort with recording, trust in AI, and preferences for rollout',
-      'The gated human-in-the-loop workflow',
-      'An implementation checklist in seven parts: room and hardware setup, patient consent, clinician workflow, data privacy and governance, training, feedback loops, and rollout strategy',
-    ],
-    results: [
-      'Automation bias identified as the top risk by both interviewees',
-      'Patients were most concerned about privacy. They wanted a visible recording indicator, explicit opt-in, and the ability to pause or stop at any time, and most said they would still opt in',
-      'Checklist safeguards against over-reliance: mandatory review before a note is filed, audits of signed notes, and rotating manual and AI-assisted documentation days so clinicians keep the skill',
-    ],
-    learnings: [
-      'An AI tool that observes people in a sensitive setting needs visible status, explicit consent, and a human gate before its output counts',
-      'People close to a pilot and people outside it weigh the same risks very differently. Interview both',
-    ],
-    status: 'Completed (Dec 2025).',
-    inlineImages: [
-      { after: 'solution', src: '/images/ambient-ai-clinical-documentation/ambient-system-diagram.png', alt: 'Ambient system diagram: stakeholders, effects, implementation, and risks' },
-      { after: 'whatIBuilt', src: '/images/ambient-ai-clinical-documentation/doug-hock-interview.png', alt: 'Doug Hock interview: plan and execution (VP and System COO at CHOP, oversees Ambient pilot)' },
-      { after: 'whatIBuilt', src: '/images/ambient-ai-clinical-documentation/patient-questionnaire.png', alt: 'Patient questionnaire: perceptions of an Ambient AI clinical documentation system' },
-    ],
-    tags: ['Human Factors', 'AI Safety', 'Healthcare', 'Workflow Design'],
-  },
-  {
-    slug: 'prepcaddy',
-    title: 'PrepCaddy',
-    year: '2025',
-    heroImage: '/images/prepcaddy/hero.png',
-    oneLiner:
-      'Human-centered hardware for faster, cleaner meal prep: a modular cutting board system with integrated measured containers.',
-    role: 'Product Design Engineer',
-    context: 'Aug 2025 – Dec 2025 · Human-centered product design course',
-    problem:
-      'During meal prep, users frequently create clutter from loose ingredients, perform repeated transfer steps (board → bowl → plate), lose track of portion sizes, and deal with mess around the cutting area. Traditional cutting boards optimize for cutting only, not the end-to-end preparation workflow.',
-    insight:
-      'Workflow over form: users valued function even with a rough prototype. Measured containers were a hit, but attachment needed refinement. Modularity only works if it feels mechanically solid. Small details (like knife storage) matter in physical workflows.',
-    solution:
-      'PrepCaddy integrates detachable, standardized containers directly beneath the cutting surface. Users cut ingredients directly into measured boxes, transfer entire portions cleanly in one motion, and stage ingredients without cluttering the counter. The system explores expandability and modularity to support different prep styles and quantities. Rather than optimizing for aesthetics, the goal was to reduce friction through iterative prototyping and user testing.',
-    whatIBuilt: [
-      'Proof-of-concept physical prototype using low-fidelity materials; accepted roughness in fabrication in favor of rapid iteration',
-      'Validated box placement and sizing, transfer ergonomics, and discoverability of features; prioritized interaction and workflow testing over finish quality',
-      'Conducted user testing with a simple food prep scenario (cutting and transferring apples); synthesized qualitative feedback into design changes',
+      'Led the mechanical build as the team\'s mechanical engineer: drew the electronics mount plate and designed 3D-printed parts for the car, including a spoiler wing that went through two versions',
+      'Trained a neural network driving model in the DonkeyCar simulator from my own driving data and ran three autonomous laps with it, first on my machine and then on the class\'s remote server',
+      'Lane following on the outdoor track: calibrated the color filter for the yellow and white lines and tuned the PID steering controller and throttle values, first on a test stand and then on the track',
+      'Tuned the steering limits (maximum left, straight, maximum right) when the car over-corrected, instead of only lowering gains',
+      'Ran the car through center-lane and left-lane following laps',
+      'Vision on the depth camera: the team trained a face recognition model on photos of ourselves, which labels each teammate by name with a confidence score. We then tried hand-gesture recognition with a pretrained model that returns one of eight gestures',
     ],
     decisions: [
-      'Design goals: reduce mess during ingredient prep, make transfer more controlled and intuitive, support portioning with standardized volumes, maintain simplicity and discoverability, validate through hands-on user testing',
-      'Proposed iterations from testing: replace friction-fit boxes with snap-in or magnetic attachment; reinforce expansion mechanism or remove if stability cannot be guaranteed; add dedicated knife storage outside the cutting zone; simplify seams for easier cleaning',
+      'Tune on the test stand first. The PID steering and throttle values were checked with the wheels off the ground before any autonomous run, so a bad gain could not send the car into a wall.',
+      'Fix over-correction at the steering limits. When the car made steering moves that were too large, the first change was the calibrated steering range, because gains tuned around a wrong range do not transfer.',
+      'Give each car its own ROS domain. Cars on the same network were receiving each other\'s commands, so we changed our domain ID to isolate ours.',
+      'Schedule the throttle. The car uses different throttle values depending on how hard it is steering, so it holds the lane through the curves and still makes time on the straights.',
+    ],
+    systemModes: [
+      {
+        name: 'Learned driving in simulation',
+        items: [
+          'Drive laps by hand in the simulator to record camera frames with the steering and throttle used',
+          'Train a small neural network on that data to predict steering and throttle from the image',
+          'Run the trained model as the driver and complete three autonomous laps',
+        ],
+      },
+      {
+        name: 'Lane following',
+        items: [
+          'Camera frame → color filter for the lane lines → line position relative to image center → PID steering command',
+          'Throttle values scheduled alongside the steering command',
+          'Runs as ROS 2 nodes on the car\'s on-board computer',
+        ],
+      },
+      {
+        name: 'GPS laps',
+        items: ['The car laps a course using its GPS unit. Three laps for the class midterm, then tuned for speed'],
+      },
+      {
+        name: 'Vision',
+        items: [
+          'A face recognition model trained on the team, running on the depth camera\'s color stream',
+          'Hand-gesture recognition, explored as the command input for the final project',
+        ],
+      },
     ],
     results: [
-      'Observed positives: users intuitively understood the purpose of the boxes; reduced mess vs traditional board; transferring a full box felt satisfying and controlled; standardized volumes helped with portioning',
-      'Observed pain points: boxes did not snap securely into place; expanded cutting surface lacked perceived sturdiness; cleaning around seams felt potentially annoying; no intuitive place to store the knife between actions',
+      'Three autonomous laps in simulation with my trained driving model, locally and on the remote server',
+      'The car followed the lane around the outdoor track on its own, in both center-lane and left-lane modes',
+      'Three laps on GPS',
+      'The face recognition model identified each of the four teammates by name',
+      'The same platform went on to carry the turret for the final project',
     ],
-    iteration: [
-      'Box attachment and expansion sturdiness needed refinement',
-      'Knife storage and seam design emerged as critical from user testing',
+    learnings: [
+      'Calibrate before you tune. Clean inputs and correct actuator limits make a simple controller work',
+      'Test stands save hardware. Every new controller ran with the wheels in the air first',
+      'A rigid, well laid-out electronics plate matters more than it looks. Loose sensors show up as noise in everything downstream',
+    ],
+    status: 'Completed (May 2025). The car became the base for the Autonomous Projectile-Launching Vehicle.',
+    inlineImages: [
+      { after: 'systemModes', src: '/images/autonomous-car/donkeysim-laps.jpg', alt: 'Screen capture of my trained model driving autonomous laps in the DonkeyCar simulator, with the camera view on the left' },
+      { after: 'solution', src: '/images/autonomous-car/track-curve.jpg', alt: 'The car following the lane through a curve on the outdoor track' },
+      { after: 'solution', src: '/images/autonomous-car/track-close.jpg', alt: 'The car on the track with its camera mast and electronics plate visible' },
+      { after: 'whatIBuilt', src: '/images/autonomous-car/spoiler-v2-cad.jpg', alt: 'CAD of the 3D-printed spoiler wing for the car, second version' },
+      { after: 'results', src: '/images/autonomous-car/track-straight.jpg', alt: 'The car holding the lane on the long straight of the track' },
+    ],
+    inlineLocalVideos: [{ after: 'results', src: '/files/lane-following.mp4', caption: 'Lane following on the outdoor track, May 2025' }],
+  },
+  {
+    slug: 'apollo-x-etower',
+    title: 'Eversun Energy | Apollo X eTower',
+    year: '2024',
+    heroImage: '/images/apollo-x-etower/hero.png',
+    oneLiner:
+      'Solar lighting tower taken from concept to a demo-ready alpha in 3 months. The leg-deployment cables were fraying after about 25 cycles. I traced it to rotational wear and fixed it at the root.',
+    role: 'Mechanical Engineering Intern',
+    context: 'Jul 2024 – Sep 2024 · Eversun Energy · San Diego, CA',
+    problem:
+      'The legs of the Apollo X deploy on gas struts, and the struts release when internal metal cables are pulled. I noticed the cables fraying after only about 25 deployment cycles. That is far too few for this product: the customers are construction crews and search and rescue teams, who set a tower up and tear it down constantly and need components that last. Deployment is also the first thing a customer or investor sees, and a tower whose legs stop releasing is useless in the field. The lever handle was also small, which made it hard to grip when folding the legs back up. The fix had to fit inside the existing main body frame, pull the cables reliably, be easy to use, hold up outdoors, and lock for security.',
+    insight:
+      'The fraying was not a cable strength problem. The old lever turned a pulley, and that pulley dragged the cable through a rotation every time the legs deployed. The repeated rotational wear is what broke the strands. A tougher cable would only have delayed the failure. Changing the motion from rotary to linear removes the cause.',
+    solution:
+      'I started from an off-the-shelf industrial lever whose 90° handle rotation drives an internal rod straight up and down, and redesigned it to work in the tower. The locking handle had to fit a 25 mm cavity in the main body, and no part on the market did, so I modified the design until it fit without weakening the structure around it. The actuation cable attaches to the rod with a set screw, on a mount I made to route it into the tower body, so the cable is only ever pulled in a straight line. The larger handle also gave users a proper grip, which solved the ergonomics problem with the same part. The Apollo X itself is a portable solar lighting tower: a telescoping carbon fiber mast that extends from 5 ft to 23 ft, a main body with the control panel and two swappable battery packs, and four legs that extend past 90° and carry foldable solar panels.',
+    whatIBuilt: [
+      'Led design and fabrication of the Apollo X alpha, from concept to demo-ready hardware in 3 months',
+      'Root-caused the cable fraying to rotational wear in the pulley-routed lever and replaced it with a linear-pull locking handle, built by modifying an off-the-shelf lever',
+      'Made the design changes that got the handle into the tower: it had to fit a 25 mm cavity in the main body, lock for security, and leave the surrounding structure intact, and nothing available off the shelf did all three',
+      'Designed the mount and set-screw cable attachment that connect the handle to the strut cables',
+      'Specified the gas struts and their lengths, and selected the leg materials, based on the loads and outdoor conditions the tower had to handle',
+      'Design for assembly: wrote the step-by-step assembly sequence for the alpha unit before handoff',
+    ],
+    decisions: [
+      'Fix the motion, not the cable. Linear pull removes the rotational wear that caused the fraying, so the failure cannot come back with a different cable.',
+      'Modify a proven mechanism instead of designing from scratch. An existing industrial lever already converted handle rotation to linear travel and came with a large handle. Starting from it was faster and more durable than a fully custom mechanism, and the engineering work went into the changes needed to fit the 25 mm cavity, attach the cable, and lock.',
+      'Larger handle. Users hold the lever while lifting the legs to fold the tower, so grip size directly affects whether one person can pack it up.',
+      'Requirements first. I wrote the functional requirements (fit the frame, pull the cables reliably, intuitive, durable, lockable) before brainstorming, then compared modifying an existing lever against a fully custom one.',
+    ],
+    results: [
+      'Cable fraying eliminated. The old lever frayed its cables within about 25 cycles, and the new one pulled them reliably through testing and live demos',
+      'Legs extended smoothly and consistently on rough and uneven ground',
+      'Smooth deployment became a key selling point in investor demos',
+      'Demo-ready alpha unit completed in 3 months',
     ],
     outcome:
-      'PrepCaddy demonstrates comfort working with ambiguity, ability to test ideas quickly with real users, and translating qualitative feedback into mechanical decisions. It complements more technical projects by showing practical product judgment and iteration speed.',
+      'The alpha unit deployed reliably in front of investors, and the lever redesign was the visible difference. The finished tower stows at 5 x 2 x 1 ft, weighs 85 lb (120 lb with its case), and deploys in under 60 seconds.',
     learnings: [
-      'Workflow > form: users valued function even with a rough prototype',
-      'Measured containers were a hit, but attachment needed refinement; modularity only works if it feels mechanically solid',
-      'Small details (like knife storage) matter in physical workflows',
+      'Find the mechanism behind a failure before choosing a fix. The obvious fix here, a stronger cable, would have shipped the same problem',
+      'Starting from a proven mechanism and modifying it well is often the better engineering decision',
+      'Reliability and ergonomics can come from the same part when the requirements are written down first',
     ],
-    status: 'Completed course project (Dec 2025).',
-    nextSteps: [
-      'Develop a refined mechanical attachment system',
-      'Move to mid-fidelity prototypes with food-safe materials',
-      'Test with longer, multi-ingredient meal prep sessions',
-      'Evaluate cleaning, storage, and durability over time',
-    ],
+    status: 'Completed internship (Sep 2024).',
     inlineImages: [
-      { after: 'solution', src: '/images/prepcaddy/poster.png', alt: 'PrepCaddy poster: faster, cleaner, easier cooking — detachable transfer cups, removable cutting lid, easy clean' },
+      { after: 'problem', src: '/images/apollo-x-etower/lever-before-pulley.jpg', alt: 'Before: the original lever with its pulley and the cable routed around it' },
+      { after: 'insight', src: '/images/apollo-x-etower/lever-off-the-shelf.jpg', alt: 'The lever the redesign started from, held in hand, with the rod that moves vertically when the handle turns' },
+      { after: 'solution', src: '/images/apollo-x-etower/actuation-mechanism.png', alt: 'After: the redesigned lever mechanism with the actuation cable attached to the rod by a set screw' },
+      { after: 'solution', src: '/images/apollo-x-etower/dimensions.png', alt: 'Apollo X eTower stowed and deployed dimensions, carrying case' },
+      { after: 'whatIBuilt', src: '/images/apollo-x-etower/lever-installed.jpg', alt: 'The new lever installed on the tower body with the gas struts and cables below it' },
+      { after: 'whatIBuilt', src: '/images/apollo-x-etower/specifications.png', alt: 'Eversun eTower specifications: output, mast, energy, power, connectivity, case' },
+      { after: 'decisions', src: '/images/apollo-x-etower/brainstorm-sketches.jpg', alt: 'Sticky-note sketches from the lever redesign brainstorm' },
+      { after: 'results', src: '/images/apollo-x-etower/leg-struts.jpg', alt: 'A leg deployed on its gas struts during testing in the warehouse' },
     ],
-    tags: ['User Research', 'Rapid Prototyping', 'Product Design', 'Human-Centered Design', 'Physical Workflow', 'Iteration'],
+    tags: ['Mechanical Design', 'Mechanism Design', 'Prototyping', 'Ergonomics', 'Design for Assembly', 'Fabrication'],
   },
 ]
 

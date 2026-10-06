@@ -49,10 +49,12 @@ function Bullets({ items }: { items: string[] }) {
 
 /** Images and videos attached to one section. Two or more images flow into two columns. */
 function Media({ project, after }: { project: Project; after: SectionKey }) {
-  const images = project.inlineImages?.filter((m) => m.after === after) ?? []
+  const all = project.inlineImages?.filter((m) => m.after === after) ?? []
+  const images = all.filter((m) => !m.src.endsWith('.svg'))
+  const diagrams = all.filter((m) => m.src.endsWith('.svg'))
   const youtube = project.inlineVideos?.filter((m) => m.after === after) ?? []
   const local = project.inlineLocalVideos?.filter((m) => m.after === after) ?? []
-  if (images.length + youtube.length + local.length === 0) return null
+  if (all.length + youtube.length + local.length === 0) return null
 
   return (
     <div className="mt-10 space-y-6">
@@ -79,6 +81,18 @@ function Media({ project, after }: { project: Project; after: SectionKey }) {
         </div>
       )}
 
+      {diagrams.map((img, i) => (
+        <figure key={i}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={basePath + img.src} alt={img.alt ?? project.title} loading="lazy" className="frame block h-auto w-full" />
+          {img.alt && (
+            <figcaption aria-hidden className="mt-2.5 text-[13px] leading-[1.5] text-muted text-pretty">
+              {img.alt}
+            </figcaption>
+          )}
+        </figure>
+      ))}
+
       {youtube.map((v, i) => (
         <div key={i} className="frame relative aspect-video overflow-hidden">
           <iframe
@@ -95,12 +109,15 @@ function Media({ project, after }: { project: Project; after: SectionKey }) {
         <div className={local.length > 1 ? 'grid gap-5 sm:grid-cols-2' : ''}>
           {local.map((v, i) => (
             <figure key={i}>
-              <div className="frame relative aspect-video overflow-hidden bg-ink">
-                <video controls playsInline preload="metadata" className="absolute inset-0 h-full w-full object-contain">
-                  <source src={basePath + v.src} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
+              <video
+                controls
+                playsInline
+                preload="metadata"
+                className="frame mx-auto block h-auto max-h-[560px] w-auto max-w-full bg-ink"
+              >
+                <source src={basePath + v.src} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
               {v.caption && <figcaption className="mt-2.5 text-[13px] text-muted">{v.caption}</figcaption>}
             </figure>
           ))}

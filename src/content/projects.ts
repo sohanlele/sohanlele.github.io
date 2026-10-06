@@ -774,10 +774,10 @@ export const projects: Project[] = [
     year: '2025',
     heroImage: '/images/autonomous-car/hero.jpg',
     oneLiner:
-      'Built a small autonomous car from a kit and got it driving laps on its own: a neural network trained to drive in simulation, camera lane following with a tuned PID steering controller, GPS laps, and a face recognition model we trained ourselves.',
-    role: 'Mechanical Lead',
+      'Set the fastest time in the history of the class in the lane-following race, ahead of even the TA car, with PID values I tuned. I also led data collection and model training for the car\'s learned driving and vision.',
+    role: 'Controls tuning, data collection, and model training',
     context: 'Mar 2025 – May 2025 · UCSD ECE/MAE 148 · Team of four',
-    tags: ['Autonomous Vehicles', 'ROS 2', 'PID Control', 'Computer Vision', 'Model Training', 'CAD', '3D Printing'],
+    tags: ['Autonomous Vehicles', 'PID Control', 'Model Training', 'Data Collection', 'Computer Vision', 'ROS 2'],
     problem:
       'The class hands each team a bare RC chassis, a single-board computer, a depth camera, and a GPS unit, and ten weeks to make it drive itself. Before the final project, the car has to earn its autonomy step by step: it has to be built, wired, and mounted so the sensors hold still, then follow a lane with a camera, then lap a course on GPS. The hardest part is the lane follower. A camera on a small, fast car sees glare, shadows, and two kinds of line, and a steering controller that is tuned too hot oscillates across the lane while one tuned too soft runs wide on the curves.',
     insight:
@@ -785,12 +785,12 @@ export const projects: Project[] = [
     solution:
       'We built the car, then brought up each capability in turn. First, each of us trained a neural network to drive: you drive laps by hand in a simulator, the network learns to map camera images to steering and throttle, and then it has to complete three laps on its own. For lane following on the real car, the camera image is filtered by color to isolate the lane lines, the offset of the line from the image center becomes the error, and a PID controller turns that error into a steering command with separate throttle values for straights and turns. The same car then ran three GPS laps for the midterm and hosted the vision work that fed the final project: a face recognition model trained on our own team, and hand-gesture recognition on the depth camera.',
     whatIBuilt: [
-      'Led the mechanical build as the team\'s mechanical engineer: drew the electronics mount plate and designed 3D-printed parts for the car, including a spoiler wing that went through two versions',
-      'Trained a neural network driving model in the DonkeyCar simulator from my own driving data and ran three autonomous laps with it, first on my machine and then on the class\'s remote server',
-      'Lane following on the outdoor track: calibrated the color filter for the yellow and white lines and tuned the PID steering controller and throttle values, first on a test stand and then on the track',
+      'Found the PID steering values that won the class lane-following race with the fastest time in the history of the course, beating the TA car',
+      'Owned data collection and training for the team: drove the laps that produced the training data, trained the neural network driving model in the DonkeyCar simulator, and ran three autonomous laps with it, first on my machine and then on the class\'s remote server',
+      'Lane following on the outdoor track: drew the electronics mount plate the sensors sit on, calibrated the color filter for the yellow and white lines and tuned the PID steering controller and throttle values, first on a test stand and then on the track',
       'Tuned the steering limits (maximum left, straight, maximum right) when the car over-corrected, instead of only lowering gains',
       'Ran the car through center-lane and left-lane following laps',
-      'Vision on the depth camera: the team trained a face recognition model on photos of ourselves, which labels each teammate by name with a confidence score. We then tried hand-gesture recognition with a pretrained model that returns one of eight gestures',
+      'Vision on the depth camera: gathered the photos and trained a face recognition model on our own team, which labels each teammate by name with a confidence score. We then tried hand-gesture recognition with a pretrained model that returns one of eight gestures',
     ],
     decisions: [
       'Tune on the test stand first. The PID steering and throttle values were checked with the wheels off the ground before any autonomous run, so a bad gain could not send the car into a wall.',
@@ -828,6 +828,7 @@ export const projects: Project[] = [
       },
     ],
     results: [
+      'Fastest time in the history of the class in the lane-following race, ahead of every other team and the TA car',
       'Three autonomous laps in simulation with my trained driving model, locally and on the remote server',
       'The car followed the lane around the outdoor track on its own, in both center-lane and left-lane modes',
       'Three laps on GPS',
@@ -837,14 +838,13 @@ export const projects: Project[] = [
     learnings: [
       'Calibrate before you tune. Clean inputs and correct actuator limits make a simple controller work',
       'Test stands save hardware. Every new controller ran with the wheels in the air first',
-      'A rigid, well laid-out electronics plate matters more than it looks. Loose sensors show up as noise in everything downstream',
+      'Every team starts from the same kit, so the difference on race day comes down to tuning',
     ],
     status: 'Completed (May 2025). The car became the base for the Autonomous Projectile-Launching Vehicle.',
     inlineImages: [
       { after: 'systemModes', src: '/images/autonomous-car/donkeysim-laps.jpg', alt: 'Screen capture of my trained model driving autonomous laps in the DonkeyCar simulator, with the camera view on the left' },
       { after: 'solution', src: '/images/autonomous-car/track-curve.jpg', alt: 'The car following the lane through a curve on the outdoor track' },
       { after: 'solution', src: '/images/autonomous-car/track-close.jpg', alt: 'The car on the track with its camera mast and electronics plate visible' },
-      { after: 'whatIBuilt', src: '/images/autonomous-car/spoiler-v2-cad.jpg', alt: 'CAD of the 3D-printed spoiler wing for the car, second version' },
       { after: 'results', src: '/images/autonomous-car/track-straight.jpg', alt: 'The car holding the lane on the long straight of the track' },
     ],
     inlineLocalVideos: [{ after: 'results', src: '/files/lane-following.mp4', caption: 'Lane following on the outdoor track, May 2025' }],

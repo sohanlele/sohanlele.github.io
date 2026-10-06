@@ -143,7 +143,7 @@ export const projects: Project[] = [
     year: '2026',
     oneLiner:
       'Two working sensing systems for the gym floor: smart glasses that read plate loads and count reps, and a camera and wristband tracker that fuses video with motion data. Plus the decision that led from both to the IRIX app.',
-    heroImage: '/images/projects/irix-hero.png',
+    heroImage: '/images/projects/irix-hero.jpg',
     heroImagePosition: 'left',
     heroImageScale: 1.4,
     inlineImages: [
@@ -399,7 +399,7 @@ export const projects: Project[] = [
     year: '2025',
     oneLiner:
       'Tracked the 3D tip of a steerable needle through reflective gel with two cameras, to ~7% relative error (2.5 mm) against a physics-based deformation model, in a setting where stereo depth failed.',
-    heroImage: '/images/projects/steerable-needle/hero.png',
+    heroImage: '/images/projects/steerable-needle/hero.jpg',
     role: 'Perception pipeline design, experiments, and validation',
     context: 'Aug 2025 – Dec 2025 · Graduate research project, GRASP Lab · Team of three',
     tags: [
@@ -498,7 +498,7 @@ export const projects: Project[] = [
     ],
     inlineImages: [
       { after: 'solution', src: '/images/projects/steerable-needle/pipeline.png', alt: 'The pipeline: recorded video, segmentation, skeletonization, endpoint detection, 3D matching, and filtering' },
-      { after: 'systemModes', src: '/images/projects/steerable-needle/skeleton-glare.png', alt: 'Skeletonization results, with the glare artifact in the side view that bends the skeleton' },
+      { after: 'systemModes', src: '/images/projects/steerable-needle/skeleton-glare.jpg', alt: 'Skeletonization results, with the glare artifact in the side view that bends the skeleton' },
       { after: 'results', src: '/images/projects/steerable-needle/validation.png', alt: 'Measured bending curve against the deformation model\'s prediction, about 7% error' },
     ],
     inlineLocalVideos: [{ after: 'insight', src: '/files/steerable-needle-split-screen.mp4' }],
@@ -507,7 +507,7 @@ export const projects: Project[] = [
     slug: 'ambient-ai-clinical-documentation',
     title: 'Ambient AI Clinical Documentation',
     year: '2025',
-    heroImage: '/images/ambient-ai-clinical-documentation/hero.png',
+    heroImage: '/images/ambient-ai-clinical-documentation/hero.jpg',
     oneLiner:
       'Evaluated an AI scribe pilot at the Children\'s Hospital of Philadelphia and found automation bias to be the top risk. The deliverable was a gated, human-in-the-loop workflow and an implementation checklist.',
     role: 'Human-Systems Evaluation',
@@ -536,7 +536,6 @@ export const projects: Project[] = [
     status: 'Completed (Dec 2025).',
     inlineImages: [
       { after: 'solution', src: '/images/ambient-ai-clinical-documentation/ambient-system-diagram.png', alt: 'Ambient system diagram: stakeholders, effects, implementation, and risks' },
-      { after: 'whatIBuilt', src: '/images/ambient-ai-clinical-documentation/doug-hock-interview.png', alt: 'Interview plan for the executive who oversees the pilot' },
       { after: 'whatIBuilt', src: '/images/ambient-ai-clinical-documentation/patient-questionnaire.png', alt: 'Patient questionnaire: perceptions of an Ambient AI clinical documentation system' },
     ],
     tags: ['Human Factors', 'AI Safety', 'Healthcare', 'Workflow Design'],
@@ -591,7 +590,7 @@ export const projects: Project[] = [
       'Evaluate cleaning, storage, and durability over time',
     ],
     inlineImages: [
-      { after: 'solution', src: '/images/prepcaddy/poster.png', alt: 'PrepCaddy poster showing the detachable transfer cups, the removable cutting lid, and easy cleaning' },
+      { after: 'solution', src: '/images/prepcaddy/poster.jpg', alt: 'PrepCaddy poster showing the detachable transfer cups, the removable cutting lid, and easy cleaning' },
     ],
     tags: ['User Research', 'Rapid Prototyping', 'Product Design', 'Human-Centered Design'],
   },
@@ -599,7 +598,7 @@ export const projects: Project[] = [
     slug: 'mri-headphones',
     title: 'SoundImaging | MRI Pneumatic Headphones',
     year: '2025',
-    heroImage: '/images/mri-headphones/hero.png',
+    heroImage: '/images/mri-headphones/hero.jpg',
     heroImagePosition: 'top',
     oneLiner:
       '~45% signal-to-noise improvement in an MRI-safe pneumatic headphone system, from a redesigned transducer housing, sealed acoustic joints, and better tubing.',
@@ -658,7 +657,7 @@ export const projects: Project[] = [
     ],
     inlineImages: [
       { after: 'solution', src: '/images/mri-headphones/system-diagram.jpg', alt: 'Diagram of the redesigned system: phone and amplifier outside the MRI room, transducer and pneumatic tubing inside, headphones on the patient' },
-      { after: 'whatIBuilt', src: '/images/mri-headphones/transducer-housing.png', alt: 'CAD of the transducer housing with the push-and-twist lid seat' },
+      { after: 'whatIBuilt', src: '/images/mri-headphones/transducer-housing.jpg', alt: 'CAD of the transducer housing with the push-and-twist lid seat' },
       { after: 'whatIBuilt', src: '/images/mri-headphones/transducer-section.jpg', alt: 'Section view of the transducer housing CAD showing the smooth interior dome and the push-and-twist lid' },
       { after: 'whatIBuilt', src: '/images/mri-headphones/transducer-and-tubing.jpg', alt: 'Printed transducer housing connected to a coil of 1 in. clear PVC tubing' },
       { after: 'decisions', src: '/images/mri-headphones/tubing-sizes.jpg', alt: 'Tubing candidates of different diameters and materials held side by side' },
@@ -680,7 +679,7 @@ export const projects: Project[] = [
     title: 'Autonomous Projectile-Launching Vehicle | Mobile Robotics',
     nameFirst: true,
     year: '2025',
-    heroImage: '/images/autonomous-turret/hero.png',
+    heroImage: '/images/autonomous-turret/hero.jpg',
     oneLiner:
       'A ROS robot that drives itself with stereo depth, tracks targets with vision, and aims a pan-tilt launcher. I led the mechanical design, and it performed reliably in live demos.',
     role: 'Mechanical Lead',
@@ -760,7 +759,7 @@ export const projects: Project[] = [
       { after: 'whatIBuilt', src: '/images/autonomous-turret/launcher-internals.jpg', alt: 'Internals of the launcher on the bench, opened up next to its electronics box' },
       { after: 'decisions', src: '/images/autonomous-turret/enclosure-v1.jpg', alt: 'CAD of the first turret enclosure iteration' },
       { after: 'systemModes', src: '/images/autonomous-turret/demo-hallway.jpg', alt: 'Driving mode in the demo: the robot in a hallway, with the camera view and the stereo depth map shown alongside' },
-      { after: 'systemModes', src: '/images/autonomous-turret/pan-tilt-tracking.png', alt: 'Sentry mode: the tracking window locked onto a red target, with sentry and fire controls' },
+      { after: 'systemModes', src: '/images/autonomous-turret/pan-tilt-tracking.jpg', alt: 'Sentry mode: the tracking window locked onto a red target, with sentry and fire controls' },
       { after: 'iteration', src: '/images/autonomous-turret/car-base.jpg', alt: 'The original car before the turret, with camera, GPS, and Jetson computer labelled' },
       { after: 'iteration', src: '/images/autonomous-turret/launcher-original.jpg', alt: 'The original simple projectile launcher on its stand, before the enclosed design' },
     ],
@@ -854,7 +853,7 @@ export const projects: Project[] = [
     slug: 'apollo-x-etower',
     title: 'Eversun Energy | Apollo X eTower',
     year: '2024',
-    heroImage: '/images/apollo-x-etower/hero.png',
+    heroImage: '/images/apollo-x-etower/hero.jpg',
     oneLiner:
       'Solar lighting tower taken from concept to a demo-ready alpha in 3 months. The leg-deployment cables were fraying after about 25 cycles. I traced it to rotational wear and fixed it at the root.',
     role: 'Mechanical Engineering Intern',
@@ -896,10 +895,10 @@ export const projects: Project[] = [
     inlineImages: [
       { after: 'problem', src: '/images/apollo-x-etower/lever-before-pulley.jpg', alt: 'Before: the original lever with its pulley and the cable routed around it' },
       { after: 'insight', src: '/images/apollo-x-etower/lever-off-the-shelf.jpg', alt: 'The lever the redesign started from, held in hand, with the rod that moves vertically when the handle turns' },
-      { after: 'solution', src: '/images/apollo-x-etower/actuation-mechanism.png', alt: 'After: the redesigned lever mechanism with the actuation cable attached to the rod by a set screw' },
+      { after: 'solution', src: '/images/apollo-x-etower/actuation-mechanism.jpg', alt: 'After: the redesigned lever mechanism with the actuation cable attached to the rod by a set screw' },
       { after: 'solution', src: '/images/apollo-x-etower/dimensions.png', alt: 'Apollo X eTower stowed and deployed dimensions, carrying case' },
       { after: 'whatIBuilt', src: '/images/apollo-x-etower/lever-installed.jpg', alt: 'The new lever installed on the tower body with the gas struts and cables below it' },
-      { after: 'whatIBuilt', src: '/images/apollo-x-etower/specifications.png', alt: 'Eversun eTower specifications: output, mast, energy, power, connectivity, case' },
+      { after: 'whatIBuilt', src: '/images/apollo-x-etower/specifications.jpg', alt: 'Eversun eTower specifications: output, mast, energy, power, connectivity, case' },
       { after: 'decisions', src: '/images/apollo-x-etower/brainstorm-sketches.jpg', alt: 'Sticky-note sketches from the lever redesign brainstorm' },
       { after: 'results', src: '/images/apollo-x-etower/leg-struts.jpg', alt: 'A leg deployed on its gas struts during testing in the warehouse' },
     ],

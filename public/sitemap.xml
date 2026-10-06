@@ -1,15 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://sohanlele.com/</loc>
-    <lastmod>2025-01-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <loc>https://sohanlele.github.io/</loc>
+    <lastmod>2026-10-06</lastmod>
   </url>
   <url>
-    <loc>https://sohanlele.com/work</loc>
-    <lastmod>2025-01-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://sohanlele.github.io/projects</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://sohanlele.github.io/contact</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://sohanlele.github.io/work/irix-coach</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://sohanlele.github.io/work/irix</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://sohanlele.github.io/work/bci-finger-decoding</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://sohanlele.github.io/work/robot-sim-test-harness</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://sohanlele.github.io/work/steerable-needle</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://sohanlele.github.io/work/ambient-ai-clinical-documentation</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://sohanlele.github.io/work/prepcaddy</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://sohanlele.github.io/work/mri-headphones</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://sohanlele.github.io/work/autonomous-turret</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://sohanlele.github.io/work/autonomous-car</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://sohanlele.github.io/work/apollo-x-etower</loc>
+    <lastmod>2026-10-06</lastmod>
   </url>
 </urlset>

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://sohanlele.com',
+    url: 'https://sohanlele.github.io',
   },
   robots: {
     index: true,

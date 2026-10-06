@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sohanlele.com/sitemap.xml
+Sitemap: https://sohanlele.github.io/sitemap.xml
